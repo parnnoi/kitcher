@@ -24,13 +24,13 @@
 ## วิธีการ push และ pull กับ branch ของตัวเอง
 
 ### 1) ทำการ setup โปรเจคด้วยวิธีการดังต่อไปนี้
--- git init
--- git config user.name "dummyName"
--- git config user.email "gummyEmail@dummy" (กรุณาใช้อีเมลเดียวกับ github)
--- git remote add origin myRepositoryLink
-ปล. หากทำงานเก่ามาก่อนจะไม่สามารถ add ได้เพราะเคยสร้าง remote ชื่อ origin ไปแล้ว ต้องไปลบก่อน
--- ลบด้วย git remote rm origin
--- แล้วทำการ git remote add ... ใหม่
+-- git init <br>
+-- git config user.name "dummyName" <br>
+-- git config user.email "gummyEmail@dummy" (กรุณาใช้อีเมลเดียวกับ github) <br>
+-- git remote add origin myRepositoryLink <br>
+ปล. หากทำงานเก่ามาก่อนจะไม่สามารถ add ได้เพราะเคยสร้าง remote ชื่อ origin ไปแล้ว ต้องไปลบก่อน <br>
+-- ลบด้วย git remote rm origin <br>
+-- แล้วทำการ git remote add ... ใหม่ <br>
 
 
 ### 2) สร้าง branch ของตัวเอง ด้วย "git checkout -b dummyBranchName"
