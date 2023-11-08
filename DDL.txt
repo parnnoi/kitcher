@@ -117,7 +117,7 @@ CREATE TABLE login(
 	password varchar(50) NOT NULL,
 	role varchar(30) NOT NULL DEFAULT 'user',
 	PRIMARY KEY (uid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid),
+	FOREIGN KEY (uid) REFERENCES userinfo(uid)
 );
 
 CREATE TABLE logincookie(
