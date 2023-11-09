@@ -58,15 +58,19 @@ def createcookie():
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
 
-    sql = "SELECT count(*) as myCount FROM logincookie WHERE uid = %s AND cookiestatus = True"
-    val = (data['uid'],)
+    sql = "SELECT cookieid FROM logincookie WHERE uid = %s AND computerid = %s AND cookiestatus = True"
+    val = (data['uid'], data['computerid'])
     mycursor.execute(sql, val)
     result = mycursor.fetchall()
-    isExists = result[0]['myCount']
+    if(len(result) > 0):
+        isExists = result[0]['cookieid']
+    else:
+        isExists = 0
 
     if isExists:
         #update cookie
-        sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY"
+        sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY WHERE cookieid = %s"
+        val = (isExists,)
         mycursor.execute(sql, val)
         mydb.commit()
 
@@ -82,7 +86,7 @@ def createcookie():
             maxId[0]['myMax'] = 0
         newId = int(maxId[0]['myMax']) + 1
 
-        #if cookie status are expired
+        #create new cookie
         sql = "INSERT INTO logincookie VALUE (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 3 DAY)"
         val = (newId, data['uid'], True, data['computerid'],)
         mycursor.execute(sql, val)
@@ -97,16 +101,22 @@ def loginbypass():
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
 
-    sql = "SELECT count(*) as myCount FROM logincookie WHERE uid = %s AND cookiestatus = True"
-    val = (data['uid'],)
+    #Check if status is available for bypass
+    sql = "SELECT cookiestatus FROM logincookie WHERE cookieid = %s AND computerid = %s AND cookiestatus = True"
+    val = (data['cookieid'], data['computerid'],)
     mycursor.execute(sql, val)
     result = mycursor.fetchall()
-    isExists = result[0]['myCount']
+    if(len(result) > 0):
+        isAvailable = result[0]['cookiestatus']
+    else:
+        isAvailable = 0
 
-    if isExists:
-        #update expired date
-        sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY"
+    if isAvailable:
+        #update cookie
+        sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY WHERE cookieid = %s"
+        val = (data['cookieid'],)
         mycursor.execute(sql, val)
+        mydb.commit()
 
         #get uid
         sql = "SELECT uid from logincookie WHERE cookieid = %s AND computerid = %s"
