@@ -1,0 +1,20 @@
+#create new category
+POST http://127.0.0.1:5000/api/category
+Content-Type: application/json
+
+{
+    "categoryName": "Hungry",
+    "detail": "I'm Hungry so much"
+}
+
+###
+
+#update category from categoryid
+PUT http://127.0.0.1:5000/api/category/update
+Content-Type: application/json
+
+{
+    "categoryid": "3",
+    "categoryName": "Hello",
+    "detail": "I'm Hungry so much"
+}

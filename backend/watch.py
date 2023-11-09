@@ -1,21 +1,16 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
 import json
 import mysql.connector
 
-#set " set FLASK_ENV=development "
-#set " $env:FLASK_APP = "example.py" "
-#run " flask --debug run "
-
-app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
-CORS(app)
+watch = Blueprint("watch", __name__)
+CORS(watch)
 host = "localhost"
 user = "root"
 password = ""
 db = "kitcher"
 
-@app.route("/api/menu/<menuid>", methods = ['POST'])
+@watch.route("/api/menu/<menuid>", methods = ['POST'])
 def watchmenu(menuid):
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)

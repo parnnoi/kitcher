@@ -1,21 +1,16 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
 import json
 import mysql.connector
 
-#set " set FLASK_ENV=development "
-#set " $env:FLASK_APP = "example.py" "
-#run " flask --debug run "
-
-app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
-CORS(app)
+login = Blueprint("login", __name__)
+CORS(login)
 host = "localhost"
 user = "root"
 password = ""
 db = "kitcher"
 
-@app.route("/api/login/<uid>")
+@login.route("/api/login/<uid>")
 def readuserinfo(uid):
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
@@ -33,8 +28,8 @@ def readuserinfo(uid):
     else: #user is already exists
         return make_response(jsonify({"status": "not found"}), 200)
     
-@app.route("/api/login", methods = ['POST'])
-def login():
+@login.route("/api/login", methods = ['POST'])
+def newlogin():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
@@ -52,7 +47,7 @@ def login():
     else: #user is not found
         return make_response(jsonify({"status": "not found"}), 200)
     
-@app.route("/api/login/cookie", methods = ['POST'])
+@login.route("/api/login/cookie", methods = ['POST'])
 def createcookie():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -95,7 +90,7 @@ def createcookie():
         response = {"status":"complete"}
         return make_response(jsonify(response), 200)
     
-@app.route("/api/login/cookie/bypass", methods = ['POST'])
+@login.route("/api/login/cookie/bypass", methods = ['POST'])
 def loginbypass():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
