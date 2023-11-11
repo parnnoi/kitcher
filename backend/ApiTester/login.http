@@ -19,8 +19,8 @@ POST http://127.0.0.1:5000/api/login/cookie
 Content-Type: application/json
 
 {
-    "uid": "4",
-    "computerid": "LAPTOP-XD02"
+    "uid": "1",
+    "computerid": "LAPTOP-XD03"
 }
 
 ###

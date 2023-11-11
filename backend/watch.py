@@ -1,15 +1,17 @@
 from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
+import dbsettings
 import json
 import mysql.connector
 
 watch = Blueprint("watch", __name__)
 CORS(watch)
-host = "localhost"
-user = "root"
-password = ""
-db = "kitcher"
+host = dbsettings.host
+user = dbsettings.user
+password = dbsettings.password
+db = dbsettings.db
 
+#user click to the menu
 @watch.route("/api/menu/<menuid>", methods = ['POST'])
 def watchmenu(menuid):
     data = request.get_json()
@@ -21,10 +23,7 @@ def watchmenu(menuid):
     val = (menuid,)
     mycursor.execute(sql, val)
     numMenu = mycursor.fetchall()
-    if(len(numMenu) > 0):
-        isExists = numMenu[0]['myCount']
-    else:
-        isExists = 0
+    isExists = numMenu[0]['myCount']
 
     if(isExists): #have menu in database
         #add to visitmenu
@@ -33,7 +32,10 @@ def watchmenu(menuid):
         val = (menuid,)
         mycursor.execute(sql, val)
         maxId = mycursor.fetchall()
-        newId = int(maxId[0]['myMax']) + 1
+        if(int(maxId[0]['myMax']) == None):
+            newId = 1
+        else:
+            newId = int(maxId[0]['myMax']) + 1
 
         #create new visit
         sql = "INSERT INTO visitmenu VALUE (%s, %s, %s, CURRENT_TIMESTAMP)"

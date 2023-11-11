@@ -1,15 +1,17 @@
 from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
+import dbsettings
 import json
 import mysql.connector
 
 category = Blueprint("category", __name__)
 CORS(category)
-host = "localhost"
-user = "root"
-password = ""
-db = "kitcher"
+host = dbsettings.host
+user = dbsettings.user
+password = dbsettings.password
+db = dbsettings.db
 
+#add new category
 @category.route("/api/category", methods = ['POST'])
 def addnewcategory():
     data = request.get_json()
@@ -17,10 +19,13 @@ def addnewcategory():
     mycursor = mydb.cursor(dictionary=True)
 
     #get lastest categoryid
-    sql = "SELECT COUNT(*) AS myCount FROM category"
+    sql = "SELECT MAX(categoryid) AS myMax FROM category"
     mycursor.execute(sql)
     result = mycursor.fetchall()
-    newCategoryId = int(result[0]['myCount']) + 1 
+    if(result[0]['myMax'] == None):
+        newCategoryId = 1
+    else:
+        newCategoryId = int(result[0]['myMax']) + 1 
 
     #add new category
     sql = "INSERT INTO category VALUE (%s, %s, %s)"
@@ -30,6 +35,7 @@ def addnewcategory():
     
     return make_response(jsonify({"status": "complete"}), 200)
 
+#change something in category by id
 @category.route("/api/category/update", methods = ['PUT'])
 def editcategory():
     data = request.get_json()
@@ -52,3 +58,16 @@ def editcategory():
         return make_response(jsonify({"status": "complete"}), 200)
     else:
         return make_response(jsonify({"status": "not exists"}), 200)
+    
+#get everything from category
+@category.route("/api/category/all")
+def getcategoryid():
+    mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
+    mycursor = mydb.cursor(dictionary=True)
+    
+    #get every category
+    sql = "SELECT * from category"
+    mycursor.execute(sql)
+    result = mycursor.fetchall()
+
+    return make_response(jsonify(result), 200)

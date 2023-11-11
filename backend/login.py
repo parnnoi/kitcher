@@ -1,15 +1,17 @@
 from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
+import dbsettings
 import json
 import mysql.connector
 
 login = Blueprint("login", __name__)
 CORS(login)
-host = "localhost"
-user = "root"
-password = ""
-db = "kitcher"
+host = dbsettings.host
+user = dbsettings.user
+password = dbsettings.password
+db = dbsettings.db
 
+#read user information fromm uid
 @login.route("/api/login/<uid>")
 def readuserinfo(uid):
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -28,6 +30,7 @@ def readuserinfo(uid):
     else: #user is already exists
         return make_response(jsonify({"status": "not found"}), 200)
     
+#login from username and password
 @login.route("/api/login", methods = ['POST'])
 def newlogin():
     data = request.get_json()
@@ -46,7 +49,8 @@ def newlogin():
 
     else: #user is not found
         return make_response(jsonify({"status": "not found"}), 200)
-    
+
+#create or update cookie if user login from username and password
 @login.route("/api/login/cookie", methods = ['POST'])
 def createcookie():
     data = request.get_json()
@@ -62,7 +66,7 @@ def createcookie():
     else:
         isExists = 0
 
-    if isExists:
+    if isExists: #already have available cookie
         #update cookie
         sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY WHERE cookieid = %s"
         val = (isExists,)
@@ -71,15 +75,17 @@ def createcookie():
 
         response = {"status":"already exists"}
         return make_response(jsonify(response), 200)
-    else:
+    
+    else: #not have available cookie
         #get max cookie number
         sql = "SELECT MAX(cookieid) as myMax FROM logincookie"
         mycursor.execute(sql)
         maxId = mycursor.fetchall()
         print(maxId)
         if(maxId[0]['myMax'] == None):
-            maxId[0]['myMax'] = 0
-        newId = int(maxId[0]['myMax']) + 1
+            newId = 1
+        else:
+            newId = int(maxId[0]['myMax']) + 1
 
         #create new cookie
         sql = "INSERT INTO logincookie VALUE (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 3 DAY)"
@@ -89,7 +95,8 @@ def createcookie():
 
         response = {"status":"complete"}
         return make_response(jsonify(response), 200)
-    
+
+#user use cookie for bypass login and update cookie
 @login.route("/api/login/cookie/bypass", methods = ['POST'])
 def loginbypass():
     data = request.get_json()
@@ -101,12 +108,12 @@ def loginbypass():
     val = (data['cookieid'], data['computerid'],)
     mycursor.execute(sql, val)
     result = mycursor.fetchall()
-    if(len(result) > 0):
-        isAvailable = result[0]['cookiestatus']
-    else:
+    if(result[0]['cookiestatus'] == None):
         isAvailable = 0
+    else:
+        isAvailable = result[0]['cookiestatus']
 
-    if isAvailable:
+    if isAvailable: #can bypass
         #update cookie
         sql = "UPDATE logincookie SET lastestLoginDate = CURRENT_TIMESTAMP, expiredDate = CURRENT_TIMESTAMP + INTERVAL 3 DAY WHERE cookieid = %s"
         val = (data['cookieid'],)
@@ -122,6 +129,7 @@ def loginbypass():
 
         response = {"uid": result[0]['uid'], "status": "bypass"}
         return make_response(jsonify(response), 200)
-    else:
+    
+    else: #can't bypass
         response = {"status": "can't access"}
         return make_response(jsonify(response), 200)
