@@ -1,0 +1,121 @@
+#check table menu
+GET http://127.0.0.1:5000/api/recipes/addread
+
+###
+
+#Create menu
+POST http://127.0.0.1:5000/api/recipes/add
+Content-Type: application/json
+
+# 2 case You can enter data 1 at a time.
+# Assume have uid = 1 and have category 1 only
+#Case 1
+  # {
+  #   "createruid": 1,
+  #   "menuName": "Healthy Salad",
+  #   "estimateTime": "15 minutes",
+  #   "categoryid": 1
+  # }
+
+#Case 2
+  {
+    "createruid": 1,
+    "menuName": "Corndog",
+    "estimateTime": "17 minutes",
+    "categoryid": 1
+  }
+
+###
+
+#Add Ingredient
+POST http://127.0.0.1:5000/api/recipe/add/ingredient/5
+Content-Type: application/json
+
+# /7 is mean menuid
+#Testcase can test for each user by change path.
+#fix ...
+
+{
+  "ingredients" : [
+    {"ingredientname": "Ingredient A", "quantity": 100},
+    {"ingredientname": "Ingredient B", "quantity": 12},
+    {"ingredientname": "Ingredient C", "quantity": 35},
+    {"ingredientname": "Ingredient D", "quantity": 62},
+    {"ingredientname": "Ingredient E", "quantity": 1},
+    {"ingredientname": "Ingredient F", "quantity": 4},
+    {"ingredientname": "Ingredient G", "quantity": 9},
+    {"ingredientname": "Ingredient H", "quantity": 34},
+    {"ingredientname": "Ingredient I", "quantity": 126},
+    {"ingredientname": "Ingredient J", "quantity": 621},
+    {"ingredientname": "Ingredient K", "quantity": 216}
+  ]
+ } 
+
+#Inprogess Kus01 10/11/2023
+
+###
+
+POST http://127.0.0.1:5000/api/recipe/add/tool/5
+Content-Type: application/json
+
+
+#/1 is mean menuid
+#Insert tool function like ingredient
+
+{
+  "kitchentools": [
+    "Chef's Knife",
+    "Cutting Board",
+    "Mixing Bowls",
+    "Whisk",
+    "Measuring Cups",
+    "Measuring Spoons",
+    "Spatula",
+    "Frying Pan",
+    "Pot",
+    "Peeler",
+    "Grater",
+    "Can Opener"
+  ]
+}
+###
+
+POST http://127.0.0.1:5000/api/recipe/add/step/process/1
+Content-Type: application/json
+
+#Create Step & Process version 1
+## ADD ATTRIBUTE menuid in TABLE processid cause i think easy  for query data.
+# {
+#   "steps": [
+#     {
+#       "stepname": "Prepare",
+#       "processes": [
+#         {"detail": "Cut ingredients"},
+#         {"detail": "Boiling the water"},
+#         {"detail": "Cut meat"}
+#       ]
+#     },
+#     {
+#       "stepname": "Cooking",
+#       "processes": [
+#         {"detail": "Mix all in pan"}
+#       ]
+#     }
+#   ]
+# }
+
+###
+
+POST http://127.0.0.1:5000/api/recipe/add/stepdetail/2
+Content-Type: application/json
+
+#Create Step & Process version 2
+## DELETE table process
+## UPDATE Change Attribute stepname to detail in step TABLE
+{
+  "stepsdetail": [
+    "Cut ingredient",
+    "Cut meat",
+    "Boiling water"
+  ]
+}

@@ -1,132 +1,132 @@
 CREATE DATABASE kitcher;
 
-CREATE TABLE userinfo(
-	uid bigint NOT NULL UNIQUE,
-	fName varchar(30),
-	lName varchar(30),
-	email varchar(50),
-	telno varchar(15),	
-	createdDate datetime,
-	PRIMARY KEY (uid)
+CREATE TABLE userinfo (
+    uid bigint NOT NULL UNIQUE,
+    fName varchar(30),
+    lName varchar(30),
+    email varchar(50),
+    telno varchar(15),    
+    createdDate datetime,
+    PRIMARY KEY (uid)
 );
 
-CREATE TABLE category(
-	categoryid bigint NOT NULL UNIQUE,
-	categoryName varchar(100),
-	detail TEXT,
-	PRIMARY KEY (categoryid)
+CREATE TABLE category (
+    categoryid bigint NOT NULL UNIQUE,
+    categoryName varchar(100),
+    detail TEXT,
+    PRIMARY KEY (categoryid)
 );
 
-CREATE TABLE menu(
-	menuid bigint NOT NULL UNIQUE,
-	createruid bigint NOT NULL,
-	menuName varchar(150),
-	createdDate datetime,
-	estimateTime time,
-	categoryid bigint NOT NULL,
-	avgVote float DEFAULT 0,
-	visitCount int DEFAULT 0,
-	PRIMARY KEY (menuid),
-	FOREIGN KEY (createruid) REFERENCES userinfo(uid),
-	FOREIGN KEY (categoryid) REFERENCES category(categoryid)
+CREATE TABLE menu (
+    menuid bigint NOT NULL UNIQUE,
+    createruid bigint NOT NULL,
+    menuName varchar(150),
+    createdDate datetime,
+    estimateTime time,
+    categoryid bigint NOT NULL,
+    avgVote float DEFAULT 0,
+    visitCount int DEFAULT 0,
+    PRIMARY KEY (menuid),
+    FOREIGN KEY (createruid) REFERENCES userinfo(uid) ON DELETE CASCADE,
+    FOREIGN KEY (categoryid) REFERENCES category(categoryid) ON DELETE CASCADE
 );
 
-CREATE TABLE ingredient(
-	ingredientid bigint NOT NULL UNIQUE,
-	menuid bigint NOT NULL,
-	norder int,
-	ingredientname varchar(30),
-	quantity int,	
-	PRIMARY KEY (ingredientid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE ingredient (
+    ingredientid bigint NOT NULL UNIQUE,
+    menuid bigint NOT NULL,
+    norder int,
+    ingredientname varchar(30),
+    quantity int,    
+    PRIMARY KEY (ingredientid),
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE tool(
-	toolid bigint NOT NULL UNIQUE,
-	menuid bigint NOT NULL,
-	norder int,
-	toolname varchar(30),
-	PRIMARY KEY (toolid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE tool (
+    toolid bigint NOT NULL UNIQUE,
+    menuid bigint NOT NULL,
+    norder int,
+    toolname varchar(30),
+    PRIMARY KEY (toolid),
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE step(
-	stepid bigint NOT NULL UNIQUE,
-	menuid bigint NOT NULL,
-	norder int,
-	stepname varchar(30),
-	PRIMARY KEY (stepid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE step (
+    stepid bigint NOT NULL UNIQUE,
+    menuid bigint NOT NULL,
+    norder int,
+    stepname varchar(30),
+    PRIMARY KEY (stepid),
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE process(
-	processid bigint NOT NULL UNIQUE,
-	stepid bigint NOT NULL,
-	norder int,
-	detail varchar(100),
-	PRIMARY KEY (processid),
-	FOREIGN KEY (stepid) REFERENCES step(stepid)
+CREATE TABLE process (
+    processid bigint NOT NULL UNIQUE,
+    stepid bigint NOT NULL,
+    norder int,
+    detail varchar(100),
+    PRIMARY KEY (processid),
+    FOREIGN KEY (stepid) REFERENCES step(stepid) ON DELETE CASCADE
 );
 
-CREATE TABLE vote(
-	voteid bigint NOT NULL UNIQUE,
-	uid bigint NOT NULL,
-	menuid bigint NOT NULL,
-	score int,
-	voteDate datetime,
-	comment varchar(300),
-	PRIMARY KEY (voteid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE vote (
+    voteid bigint NOT NULL UNIQUE,
+    uid bigint NOT NULL,
+    menuid bigint NOT NULL,
+    score int,
+    voteDate datetime,
+    comment varchar(300),
+    PRIMARY KEY (voteid),
+    FOREIGN KEY (uid) REFERENCES userinfo(uid) ON DELETE CASCADE,
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE favorite(
-	favoriteid bigint NOT NULL UNIQUE,
-	uid bigint NOT NULL,
-	menuid bigint NOT NULL,
-	favoriteStatus boolean,
-	favoriteDate datetime,
-	PRIMARY KEY (favoriteid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE favorite (
+    favoriteid bigint NOT NULL UNIQUE,
+    uid bigint NOT NULL,
+    menuid bigint NOT NULL,
+    favoriteStatus boolean,
+    favoriteDate datetime,
+    PRIMARY KEY (favoriteid),
+    FOREIGN KEY (uid) REFERENCES userinfo(uid) ON DELETE CASCADE,
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE visitMenu(
-	visitid bigint NOT NULL UNIQUE,
-	uid bigint NOT NULL,
-	menuid bigint NOT NULL,
-	visitDate datetime,
-	PRIMARY KEY (visitid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE visitMenu (
+    visitid bigint NOT NULL UNIQUE,
+    uid bigint NOT NULL,
+    menuid bigint NOT NULL,
+    visitDate datetime,
+    PRIMARY KEY (visitid),
+    FOREIGN KEY (uid) REFERENCES userinfo(uid) ON DELETE CASCADE,
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE public(
-	publicid bigint NOT NULL UNIQUE,
-	menuid bigint NOT NULL,
-	norder int,
-	publicStatus boolean,
-	updateDate datetime,
-	PRIMARY KEY (publicid),
-	FOREIGN KEY (menuid) REFERENCES menu(menuid)
+CREATE TABLE public (
+    publicid bigint NOT NULL UNIQUE,
+    menuid bigint NOT NULL,
+    norder int,
+    publicStatus boolean,
+    updateDate datetime,
+    PRIMARY KEY (publicid),
+    FOREIGN KEY (menuid) REFERENCES menu(menuid) ON DELETE CASCADE
 );
 
-CREATE TABLE login(
-	uid bigint NOT NULL UNIQUE,
-	username varchar(30) NOT NULL,
-	password varchar(50) NOT NULL,
-	role varchar(30) NOT NULL DEFAULT 'user',
-	PRIMARY KEY (uid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid)
+CREATE TABLE login (
+    uid bigint NOT NULL UNIQUE,
+    username varchar(30) NOT NULL,
+    password varchar(50) NOT NULL,
+    role varchar(30) NOT NULL DEFAULT 'user',
+    PRIMARY KEY (uid),
+    FOREIGN KEY (uid) REFERENCES userinfo(uid) ON DELETE CASCADE
 );
 
-CREATE TABLE logincookie(
-	cookieid bigint NOT NULL UNIQUE,
-	uid bigint NOT NULL,
-	cookiestatus boolean NOT NULL,
-	computerid varchar(150) NOT NULL,
-	lastestLoginDate datetime,
-	expiredDate datetime,
-	PRIMARY KEY (cookieid),
-	FOREIGN KEY (uid) REFERENCES userinfo(uid)
+CREATE TABLE logincookie (
+    cookieid bigint NOT NULL UNIQUE,
+    uid bigint NOT NULL,
+    cookiestatus boolean NOT NULL,
+    computerid varchar(150) NOT NULL,
+    lastestLoginDate datetime,
+    expiredDate datetime,
+    PRIMARY KEY (cookieid),
+    FOREIGN KEY (uid) REFERENCES userinfo(uid) ON DELETE CASCADE
 );

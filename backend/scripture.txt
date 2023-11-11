@@ -1,0 +1,4 @@
+flask --app youfile.py run
+# set " set FLASK_ENV=development "
+# set " $env:FLASK_APP = "recipe.py" "
+# run " flask --debug run "
