@@ -119,3 +119,83 @@ Content-Type: application/json
     "Boiling water"
   ]
 }
+
+
+
+###
+
+#Update menu
+PUT http://127.0.0.1:5000/api/recipes/update/1
+Content-Type: application/json
+
+{
+  "menuName": "Delicious Food",
+  "estimateTime": "00:01:15",
+  "categoryid": 1
+}
+
+
+###
+
+#Update Ingredient
+PUT http://127.0.0.1:5000/api/recipe/update/ingredient/1
+Content-Type: application/json
+
+{
+  "ingredients" : [
+    {"ingredientname": "Ingredient deh", "quantity": 100, "norder": 1},
+    {"ingredientname": "Ingredient Bird", "quantity": 120, "norder": 2},
+    {"ingredientname": "Ingredient C", "quantity": 35, "norder": 3},
+    {"ingredientname": "Ingredient D", "quantity": 62, "norder": 4},
+    {"ingredientname": "Ingredient E", "quantity": 1,"norder": 5},
+    {"ingredientname": "Ingredient F", "quantity": 4, "norder": 6},
+    {"ingredientname": "Ingredient G", "quantity": 9, "norder": 7},
+    {"ingredientname": "Ingredient H", "quantity": 34, "norder": 8},
+    {"ingredientname": "Ingredient I", "quantity": 126, "norder": 9},
+    {"ingredientname": "Ingredient J", "quantity": 621, "norder": 10},
+    {"ingredientname": "Ingredient K", "quantity": 216, "norder": 11}
+  ]
+ } 
+
+
+###
+
+PUT  http://127.0.0.1:5000/api/menu/update/tool/0
+Content-Type: application/json
+
+#Update tools
+{
+  "toolkitchen" : [
+    {"toolname": " deh", "norder": 1},
+    {"toolname": " Bird", "norder": 2},
+    {"toolname": " C", "norder": 3},
+    {"toolname": " D", "norder": 4},
+    {"toolname": " E", "norder": 5},
+    {"toolname": " F", "norder": 6},
+    {"toolname": " G", "norder": 7},
+    {"toolname": " H", "norder": 8},
+    {"toolname": " I", "norder": 9},
+    {"toolname": " J", "norder": 10},
+    {"toolname": " K", "norder": 11}
+  ]
+ } 
+
+###
+
+PUT http://127.0.0.1:5000/api/menu/update/stepdetail/2
+Content-Type: application/json
+
+#Update stepdetail
+{
+  "stepdetail" : [
+    {"detail": " deh", "norder": 1},
+    {"detail": " Bird", "norder": 2},
+    {"detail": " C", "norder": 3},
+    {"detail": " D", "norder": 4},
+    {"detail": " E", "norder": 5},
+    {"detail": " F", "norder": 6}
+  ]
+ } 
+
+
+###

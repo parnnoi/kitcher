@@ -12,7 +12,7 @@ user = "root"
 password = ""
 db = "kitcher"
 
-@app.route("/api/recipes/addread")
+@app.route("/api/menu/addread")
 def ReadMenu():
     mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
     mycursor = mydb.cursor(dictionary=True)  # Return data as dictionaries
@@ -31,10 +31,11 @@ def ReadMenu():
 
     return make_response(jsonify(menu), 200)
 
+############################################## CREATE PART ##############################################
 
 ############ Create  menu ############
 
-@app.route("/api/recipes/add", methods = ['POST'])
+@app.route("/api/menu/add", methods = ['POST'])
 def CreateMenu():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -138,7 +139,7 @@ def add_ingredients(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@app.route("/api/recipe/add/ingredient/<menuid>", methods=['POST'])
+@app.route("/api/menu/add/ingredient/<menuid>", methods=['POST'])
 def route_add_ingredient(menuid):
    
     data = request.get_json()
@@ -218,7 +219,7 @@ def add_tools(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@app.route("/api/recipe/add/tool/<menuid>", methods=['POST'])
+@app.route("/api/menu/add/tool/<menuid>", methods=['POST'])
 def route_add_tool(menuid):
    
     data = request.get_json()
@@ -320,7 +321,7 @@ def route_add_tool(menuid):
 #     except Exception as e:
 #         return {"error": str(e)}, 500
 
-# @app.route("/api/recipe/add/step/process/<menuid>", methods=['POST'])
+# @app.route("/api/menu/add/step/process/<menuid>", methods=['POST'])
 # def route_add_process_step(menuid):
    
 #     data = request.get_json()
@@ -381,9 +382,148 @@ def add_step_processv2(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@app.route("/api/recipe/add/stepdetail/<menuid>", methods=['POST'])
+@app.route("/api/menu/add/stepdetail/<menuid>", methods=['POST'])
 def route_add_process_step(menuid):
    
     data = request.get_json()
     result = add_step_processv2(menuid, data)
     return make_response(jsonify(result), 200)
+
+############################################## UPDATE PART ##############################################
+
+############ Update  menu ############
+
+@app.route("/api/menu/update/<menuid>", methods=['PUT'])
+def UpdateMenu(menuid):
+    data = request.get_json()
+    mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
+    mycursor = mydb.cursor(dictionary=True)
+
+    # Check if the menuid exists
+    check_menu_query = "SELECT * FROM menu WHERE menuid = %s"
+    mycursor.execute(check_menu_query, (menuid,))
+    existing_menu = mycursor.fetchone()
+
+    if not existing_menu:
+        return make_response(jsonify({"message": "Menu not found"}), 404)
+
+    # Update menu data
+    sql = "UPDATE menu SET menuName = %s, estimateTime = %s, categoryid = %s WHERE menuid = %s"
+    val = (data['menuName'], data['estimateTime'], data['categoryid'], menuid)
+
+    mycursor.execute(sql, val)
+    mydb.commit()
+
+    return make_response(jsonify({"message": "Menu updated successfully", "menuid": menuid}), 200)
+
+############ Update  ingredient ############
+
+def update_ingredients(menuid, data):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+        
+        update_query = "UPDATE ingredient SET ingredientname = %s, quantity = %s WHERE menuid = %s AND norder = %s"
+
+        affected_rows = 0
+
+        for item in data['ingredients']:
+            # Update the existing ingredient by menuid and old_ingredientname
+            
+            update_data = (item['ingredientname'], item['quantity'], menuid, item['norder'])
+            mycursor.execute(update_query, update_data)
+            
+            affected_rows += mycursor.rowcount
+
+        if affected_rows == 0:
+            return {"message": "Ingredient don't have update"}, 404
+
+        # Fetch the results after executing all queries
+        mydb.commit()
+
+        return {"message": "Ingredients updated successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
+@app.route("/api/menu/update/ingredient/<menuid>", methods=['PUT'])
+def route_update_ingredient(menuid):
+    data = request.get_json()
+    result = update_ingredients(menuid, data)
+    return make_response(jsonify(result), 200)
+
+############ Update  tools ############
+
+def update_tool(menuid, data):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+        
+        update_query = "UPDATE tool SET toolname = %s WHERE menuid = %s AND norder = %s"
+
+        affected_rows = 0
+
+        for item in data['toolkitchen']:
+            # Update the existing ingredient by menuid and old_ingredientname
+            
+            update_data = (item['toolname'], menuid, item['norder'])
+            mycursor.execute(update_query, update_data)
+            
+            affected_rows += mycursor.rowcount
+
+        if affected_rows == 0:
+            return {"message": "Tools don't have update"}, 404
+
+        # Fetch the results after executing all queries
+        mydb.commit()
+
+        return {"message": "Tool updated successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
+@app.route("/api/menu/update/tool/<menuid>", methods=['PUT'])
+def route_update_tool(menuid):
+    data = request.get_json()
+    result = update_tool(menuid, data)
+    return make_response(jsonify(result), 200)
+
+
+############ Update  step-detail ############
+
+def update_stepdetail(menuid, data):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+        
+        update_query = "UPDATE step SET detail = %s WHERE menuid = %s AND norder = %s"
+
+        affected_rows = 0
+
+        for item in data['stepdetail']:
+            # Update the existing ingredient by menuid and old_ingredientname
+            
+            update_data = (item['detail'], menuid, item['norder'])
+            mycursor.execute(update_query, update_data)
+            
+            affected_rows += mycursor.rowcount
+
+        if affected_rows == 0:
+            return {"message": "Detail don't have update"}, 404
+
+        # Fetch the results after executing all queries
+        mydb.commit()
+
+        return {"message": "Detail updated successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
+@app.route("/api/menu/update/stepdetail/<menuid>", methods=['PUT'])
+def route_update_stepdetail(menuid):
+    data = request.get_json()
+    result = update_stepdetail(menuid, data)
+    return make_response(jsonify(result), 200)
+
+
+############################################## DELETE MENU ##############################################
