@@ -35,12 +35,12 @@ def createuser():
             newUID = int(maxUid[0]['myMax']) + 1
 
         #add user to userinfo
-        sql = "INSERT INTO userinfo VALUE(%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
+        sql = "INSERT INTO userinfo VALUES (%s, %s, %s, %s, %s, CURRENT_TIMESTAMP)"
         val = (newUID, data['fName'], data['lName'], data['email'], data['telno'],)
         mycursor.execute(sql, val)
 
         #add user to login
-        sql = "INSERT INTO login VALUE(%s, %s, %s, %s)"
+        sql = "INSERT INTO login VALUES (%s, %s, %s, %s)"
         val = (newUID, data['username'], data['password'], data['role'],)
         mycursor.execute(sql, val)
         mydb.commit()

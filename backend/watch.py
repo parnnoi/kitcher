@@ -38,7 +38,7 @@ def watchmenu(menuid):
             newId = int(maxId[0]['myMax']) + 1
 
         #create new visit
-        sql = "INSERT INTO visitmenu VALUE (%s, %s, %s, CURRENT_TIMESTAMP)"
+        sql = "INSERT INTO visitmenu VALUES (%s, %s, %s, CURRENT_TIMESTAMP)"
         val = (newId, data['uid'], menuid,)
         mycursor.execute(sql, val)
         mydb.commit()
