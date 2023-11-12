@@ -85,3 +85,22 @@ def SearchByfavorite(uid):
 
     else: #don't have recipe in database
         return make_response(jsonify({"status": "not found"}), 404)
+
+@search.route("/api/recipe/create/<uid>")
+def SearchByfavorite(uid):
+    #connect to database
+    mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
+    mycursor = mydb.cursor(dictionary=True)
+    
+    #get recipe by category
+    sql = "SELECT * FROM menu WHERE uid = %s"
+    val = (uid,)
+    mycursor.execute(sql,val)
+    result = mycursor.fetchall()
+    mydb.close()
+    
+    if(int(len(result)) > 0): #Have recipe in database
+        return make_response(jsonify(result), 200)
+
+    else: #don't have recipe in database
+        return make_response(jsonify({"status": "not found"}), 404)
