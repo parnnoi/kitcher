@@ -22,4 +22,4 @@ Content-Type: application/json
 ###
 
 #get every catefory from db
-GET https://kitcher-8d7b-git-parn01-ps-projects-eaff7429.vercel.app/api/category/all
+GET https://kitcher-ps-projects-eaff7429.vercel.app/api/category/all

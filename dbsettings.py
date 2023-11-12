@@ -1,4 +1,4 @@
 host = "aws.connect.psdb.cloud"
-user = "ebl63xhk26tgvugxik0f"
-password = "pscale_pw_cf2eaZwkSLvRAmr5BnYwi9N1R8ITtnI8HJFnXX8ahPE"
+user = "4qh2rjl4y80cacyueggn"
+password = "pscale_pw_Wx6OZKGlSOn4NoWM9A5OD4GHLCgEobxigDa9TIw54la"
 db = "kitcher"
