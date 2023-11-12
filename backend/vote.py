@@ -40,7 +40,7 @@ def addnewvote():
             newId = result[0]['myMax'] + 1
 
         #create new vote
-        sql = "INSERT INTO vote VALUE (%s, %s, %s, %s, CURRENT_TIMESTAMP, %s)"
+        sql = "INSERT INTO vote VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, %s)"
         val = (newId, data['uid'], data['menuid'], data['score'], data['comment'],)
         mycursor.execute(sql, val)
         mydb.commit()

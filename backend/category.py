@@ -28,7 +28,7 @@ def addnewcategory():
         newCategoryId = int(result[0]['myMax']) + 1 
 
     #add new category
-    sql = "INSERT INTO category VALUE (%s, %s, %s)"
+    sql = "INSERT INTO category VALUES (%s, %s, %s)"
     val = (newCategoryId, data['categoryName'], data['detail'],)
     mycursor.execute(sql, val)
     mydb.commit()

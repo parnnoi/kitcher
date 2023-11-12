@@ -89,7 +89,7 @@ def createcookie():
             newId = int(maxId[0]['myMax']) + 1
 
         #create new cookie
-        sql = "INSERT INTO logincookie VALUE (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 3 DAY)"
+        sql = "INSERT INTO logincookie VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL 3 DAY)"
         val = (newId, data['uid'], True, data['computerid'],)
         mycursor.execute(sql, val)
         mydb.commit()
