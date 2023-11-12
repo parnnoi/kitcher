@@ -1,5 +1,5 @@
 #Read user info from userinfo
-POST http://127.0.0.1:5000/api/menu/3
+POST http://127.0.0.1:5000/api/menu/1
 Content-Type: application/json
 
 {

@@ -28,7 +28,7 @@ def watchmenu(menuid):
     if(isExists): #have menu in database
         #add to visitmenu
         #get max visitid
-        sql = "SELECT COUNT(*) as myMax FROM visitmenu WHERE menuid = %s"
+        sql = "SELECT MAX(visitid) as myMax FROM visitmenu WHERE menuid = %s"
         val = (menuid,)
         mycursor.execute(sql, val)
         maxId = mycursor.fetchall()
@@ -64,7 +64,7 @@ def watchmenu(menuid):
         ingredient = mycursor.fetchall()
 
         #add to ingredient
-        menuData[0]['ingredient'] = ingredient[0]
+        menuData[0]['ingredient'] = ingredient
 
         #get tool
         sql = "SELECT * FROM tool WHERE menuid = %s"
@@ -73,7 +73,7 @@ def watchmenu(menuid):
         tool = mycursor.fetchall()
 
         #add to tool
-        menuData[0]['tool'] = tool[0]
+        menuData[0]['tool'] = tool
 
         #find number of step
         sql = "SELECT MAX(norder) as myMax FROM step WHERE menuid = %s"
@@ -107,5 +107,5 @@ def watchmenu(menuid):
         return make_response(jsonify(menuData), 200)
 
     else: #menu is not exists
-        return make_response(jsonify({"status": "not found"}), 200)
+        return make_response(jsonify({"status": "not found"}), 404)
     

@@ -28,7 +28,7 @@ def readuserinfo(uid):
         return make_response(jsonify(userInfo), 200)
 
     else: #user is already exists
-        return make_response(jsonify({"status": "not found"}), 200)
+        return make_response(jsonify({"status": "not found"}), 404)
     
 #login from username and password
 @login.route("/api/login", methods = ['POST'])
@@ -48,7 +48,7 @@ def newlogin():
         return make_response(jsonify(userInfo), 200)
 
     else: #user is not found
-        return make_response(jsonify({"status": "not found"}), 200)
+        return make_response(jsonify({"status": "not found"}), 404)
 
 #create or update cookie if user login from username and password
 @login.route("/api/login/cookie", methods = ['POST'])
@@ -57,6 +57,7 @@ def createcookie():
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
 
+    #find if user have the available cookie or not
     sql = "SELECT cookieid FROM logincookie WHERE uid = %s AND computerid = %s AND cookiestatus = True"
     val = (data['uid'], data['computerid'])
     mycursor.execute(sql, val)
@@ -94,7 +95,7 @@ def createcookie():
         mydb.commit()
 
         response = {"status":"complete"}
-        return make_response(jsonify(response), 200)
+        return make_response(jsonify(response), 201)
 
 #user use cookie for bypass login and update cookie
 @login.route("/api/login/cookie/bypass", methods = ['POST'])
@@ -128,8 +129,8 @@ def loginbypass():
         mydb.commit()
 
         response = {"uid": result[0]['uid'], "status": "bypass"}
-        return make_response(jsonify(response), 200)
+        return make_response(jsonify(response), 202)
     
     else: #can't bypass
         response = {"status": "can't access"}
-        return make_response(jsonify(response), 200)
+        return make_response(jsonify(response), 406)

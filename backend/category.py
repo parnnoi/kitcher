@@ -33,7 +33,7 @@ def addnewcategory():
     mycursor.execute(sql, val)
     mydb.commit()
     
-    return make_response(jsonify({"status": "complete"}), 200)
+    return make_response(jsonify({"status": "complete"}), 201)
 
 #change something in category by id
 @category.route("/api/category/update", methods = ['PUT'])
@@ -57,17 +57,27 @@ def editcategory():
         mydb.commit()
         return make_response(jsonify({"status": "complete"}), 200)
     else:
-        return make_response(jsonify({"status": "not exists"}), 200)
+        return make_response(jsonify({"status": "not exists"}), 404)
     
 #get everything from category
 @category.route("/api/category/all")
 def getcategoryid():
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
-    
-    #get every category
-    sql = "SELECT * from category"
+
+    #check category have any rows?
+    sql = "SELECT COUNT(*) AS myCount FROM category"
     mycursor.execute(sql)
     result = mycursor.fetchall()
+    isExists = result[0]['myCount']
 
-    return make_response(jsonify(result), 200)
+    if isExists:#have at least 1 row in table
+        #get every category
+        sql = "SELECT * from category"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+
+        result[0]['status'] = "succuss"
+        return make_response(jsonify(result), 200)
+    else:
+        return make_response(jsonify({"status": "not found"}), 404)

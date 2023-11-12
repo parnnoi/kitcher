@@ -12,7 +12,7 @@ password = dbsettings.password
 db = dbsettings.db
 
 #add new vote
-@vote.route("/api/vote", methods = ['POST'])
+@vote.route("/api/menu/vote", methods = ['POST'])
 def addnewvote():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -27,7 +27,7 @@ def addnewvote():
 
     if(numCount > 0 ): #if you already vote this menu
         ### method later thiscuss
-        return make_response(jsonify({"status": "you alreay voted"}), 200)
+        return make_response(jsonify({"status": "alreay voted"}), 429)
     
     else: #you never vote this menu
         #get new vote id
@@ -45,6 +45,6 @@ def addnewvote():
         mycursor.execute(sql, val)
         mydb.commit()
 
-        return make_response(jsonify({"status" : "complete"}), 200)
+        return make_response(jsonify({"status" : "complete"}), 201)
 
 
