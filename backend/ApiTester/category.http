@@ -3,8 +3,8 @@ POST http://127.0.0.1:5000/api/category
 Content-Type: application/json
 
 {
-    "categoryName": "Hungry",
-    "detail": "I'm Hungry so much"
+    "categoryName": "tester",
+    "detail": "detail for test"
 }
 
 ###
