@@ -41,4 +41,4 @@ CORS(app)
 
 @app.route("/")
 def welcome():
-    return make_response("welcome to api", 200)
+    return "Hello World"
