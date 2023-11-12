@@ -105,14 +105,11 @@ def loginbypass():
     mycursor = mydb.cursor(dictionary=True)
 
     #Check if status is available for bypass
-    sql = "SELECT cookiestatus FROM logincookie WHERE cookieid = %s AND computerid = %s AND cookiestatus = True"
+    sql = "SELECT COUNT(*) AS myCount FROM logincookie WHERE cookieid = %s AND computerid = %s AND cookiestatus = True"
     val = (data['cookieid'], data['computerid'],)
     mycursor.execute(sql, val)
     result = mycursor.fetchall()
-    if(result[0]['cookiestatus'] == None):
-        isAvailable = 0
-    else:
-        isAvailable = result[0]['cookiestatus']
+    isAvailable = result[0]['myCount']
 
     if isAvailable: #can bypass
         #update cookie

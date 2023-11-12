@@ -61,8 +61,8 @@ def verify(username):
     mycursor.execute(sql, val)
     numUser = mycursor.fetchall()
 
-    if(int(numUser[0]['myCount']) == 0): #user is not exists
-        return make_response(jsonify({"status": "not exists"}), 200)
-
-    else: #user is already exists
+    if(numUser[0]['myCount'] > 0): #user is exists
         return make_response(jsonify({"status": "exists"}), 200)
+
+    else: #user is not exists
+        return make_response(jsonify({"status": "not exists"}), 200)
