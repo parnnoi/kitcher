@@ -22,4 +22,4 @@ Content-Type: application/json
 ###
 
 #get every catefory from db
-GET http://127.0.0.1:5000/api/category/all
+GET https://tame-garb-slug.cyclic.app/api/category/all

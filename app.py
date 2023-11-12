@@ -22,6 +22,8 @@ from backend.vote import vote
 ###########################################
 
 app = Flask(__name__)
+if __name__ == '__main__':
+    app.run(debug=True)
 
 #use for multiple file flask running
 app.register_blueprint(login)
