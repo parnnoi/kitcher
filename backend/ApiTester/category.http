@@ -22,4 +22,4 @@ Content-Type: application/json
 ###
 
 #get every catefory from db
-GET https://tame-garb-slug.cyclic.app/api/category/all
+GET https://kitcher-7a2xgtg64-ps-projects-eaff7429.vercel.app/api/category/all
