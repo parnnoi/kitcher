@@ -1,0 +1,40 @@
+##################### Test API's favorite.py #####################
+#Test Like recipe
+POST http://127.0.0.1:5000/api/recipe/favorite
+Content-Type: application/json
+
+{
+    "uid": 1,
+    "menuid": 1
+}
+
+###
+#Test Deleting favorite's recipe
+@Dfavoriteid = 1
+DELETE  http://127.0.0.1:5000/api/recipe/delete/{{Dfavoriteid}}
+
+###
+#Test Searching all recipe
+GET  http://127.0.0.1:5000/api/recipe/all
+
+
+##################### Test API's Search.py #####################
+###
+#Test Searching recipe by name's memu
+@menuName = dummy
+GET  http://127.0.0.1:5000/api/recipe/name/{{menuName}}
+
+###
+#Test Searching recipe by categoryid
+@categoryid = 1
+GET  http://127.0.0.1:5000/api/recipe/category/{{categoryid}}
+
+###
+#Test Searching recipe by favoriteid
+@Sfavoriteid = 1
+GET  http://127.0.0.1:5000/api/recipe/favorite/{{Sfavoriteid}}
+
+####
+#Test Searching recipe by createrid
+@createrid = 1
+GET  http://127.0.0.1:5000/api/recipe/creater/{{createrid}}
