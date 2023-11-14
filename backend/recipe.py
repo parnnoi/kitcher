@@ -42,7 +42,7 @@ def CreateMenu():
     mycursor = mydb.cursor(dictionary=True) #return ข้อมูลแบบ dictionary ซึ่งมันเหมาะกับการส่งออกแบบ JSON อยู่แล้ว
 
     #Count createMenu by UID
-    sql = "INSERT INTO menu (createruid, menuid, menuName, createdDate, estimateTime, categoryid) VALUES (%s, %s, %s, %s, %s, %s)"
+    sql = "INSERT INTO menu (uid, menuid, menuName, createdDate, estimateTime, categoryid) VALUES (%s, %s, %s, %s, %s, %s)"
 
     #dynamic generate
     menuid_query = "SELECT COALESCE(MAX(menuid), 0) + 1 AS count FROM menu"
@@ -51,14 +51,14 @@ def CreateMenu():
 
     data['createdDate'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    val = (data['createruid'], menuid, data['menuName'], data['createdDate'],  data['estimateTime'], data['categoryid'])
+    val = (data['uid'], menuid, data['menuName'], data['createdDate'],  data['estimateTime'], data['categoryid'])
 
     mycursor.execute(sql, val)
     mydb.commit()
 
     # Fetch the generated menuid
-    return_menuid_query = "SELECT MAX(menuid) AS menuid FROM menu WHERE createruid = %s"
-    mycursor.execute(return_menuid_query, (data['createruid'],))
+    return_menuid_query = "SELECT MAX(menuid) AS menuid FROM menu WHERE uid = %s"
+    mycursor.execute(return_menuid_query, (data['uid'],))
     returned_menuid = mycursor.fetchone()
 
     if returned_menuid:
@@ -527,3 +527,36 @@ def route_update_stepdetail(menuid):
 
 
 ############################################## DELETE MENU ##############################################
+
+def delete_menu(menuid, uid):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+
+        # Delete related records from the ingredient table
+        delete_ingredient_query = "DELETE FROM ingredient WHERE menuid = %s"
+        mycursor.execute(delete_ingredient_query, (menuid,))
+
+        # Delete related records from the tool table
+        delete_tool_query = "DELETE FROM tool WHERE menuid = %s"
+        mycursor.execute(delete_tool_query, (menuid,))
+
+        # Delete related records from the step table
+        delete_step_query = "DELETE FROM step WHERE menuid = %s"
+        mycursor.execute(delete_step_query, (menuid,))
+
+        # Delete the record from the menu table
+        delete_menu_query = "DELETE FROM menu WHERE uid = %s AND menuid = %s"
+        mycursor.execute(delete_menu_query, (uid, menuid))
+
+        mydb.commit()
+
+        return {"message": "Deletion successful"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
+@app.route("/api/menu/<uid>/<menuid>", methods=['DELETE'])
+def route_delete_menu(menuid, uid):
+    result = delete_menu(menuid, uid)
+    return make_response(jsonify(result), 200)

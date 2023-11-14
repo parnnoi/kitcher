@@ -1,10 +1,10 @@
 #check table menu
-GET http://127.0.0.1:5000/api/recipes/addread
+GET http://127.0.0.1:5000/api/menu/addread
 
 ###
 
 #Create menu
-POST http://127.0.0.1:5000/api/recipes/add
+POST http://127.0.0.1:5000/api/menu/add
 Content-Type: application/json
 
 # 2 case You can enter data 1 at a time.
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 #Case 2
   {
-    "createruid": 1,
+    "uid": 1,
     "menuName": "Corndog",
     "estimateTime": "17 minutes",
     "categoryid": 1
@@ -28,7 +28,7 @@ Content-Type: application/json
 ###
 
 #Add Ingredient
-POST http://127.0.0.1:5000/api/recipe/add/ingredient/5
+POST http://127.0.0.1:5000/api/menu/add/ingredient/5
 Content-Type: application/json
 
 # /7 is mean menuid
@@ -51,11 +51,39 @@ Content-Type: application/json
   ]
  } 
 
+# {
+#  "ingredients" : [
+#     "Ingredient A",
+#     "Ingredient B",
+#     "Ingredient C",
+#     "Ingredient D",
+#     "Ingredient E",
+#     "Ingredient F",
+#     "Ingredient G",
+#     "Ingredient H",
+#     "Ingredient I",
+#     "Ingredient J",
+#     "Ingredient K"
+#   ],
+#   "quantity": [
+#     100,
+#     12,
+#     35,
+#     62,
+#     1,
+#     4,
+#     9,
+#     34,
+#     126,
+#     621,
+#     216
+#   ]
+# }
 #Inprogess Kus01 10/11/2023
 
 ###
 
-POST http://127.0.0.1:5000/api/recipe/add/tool/5
+POST http://127.0.0.1:5000/api/menu/add/tool/5
 Content-Type: application/json
 
 
@@ -80,7 +108,7 @@ Content-Type: application/json
 }
 ###
 
-POST http://127.0.0.1:5000/api/recipe/add/step/process/1
+POST http://127.0.0.1:5000/api/menu/add/step/process/1
 Content-Type: application/json
 
 #Create Step & Process version 1
@@ -106,7 +134,7 @@ Content-Type: application/json
 
 ###
 
-POST http://127.0.0.1:5000/api/recipe/add/stepdetail/2
+POST http://127.0.0.1:5000/api/menu/add/stepdetail/2
 Content-Type: application/json
 
 #Create Step & Process version 2
@@ -125,7 +153,7 @@ Content-Type: application/json
 ###
 
 #Update menu
-PUT http://127.0.0.1:5000/api/recipes/update/1
+PUT http://127.0.0.1:5000/api/menu/update/1
 Content-Type: application/json
 
 {
@@ -138,7 +166,7 @@ Content-Type: application/json
 ###
 
 #Update Ingredient
-PUT http://127.0.0.1:5000/api/recipe/update/ingredient/1
+PUT http://127.0.0.1:5000/api/menu/update/ingredient/1
 Content-Type: application/json
 
 {
@@ -199,3 +227,5 @@ Content-Type: application/json
 
 
 ###
+
+DELETE http://127.0.0.1:5000/api/menu/1/1
