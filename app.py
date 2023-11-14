@@ -14,7 +14,9 @@ from backend.search import search
 from backend.favorite import favorite
 #from backend.publish import publish
 from backend.vote import vote
-from test import test
+
+### using for dev only ### 
+#from test import test
 
 ###########################################
 #to running
@@ -34,7 +36,9 @@ app.register_blueprint(search)
 app.register_blueprint(favorite)
 #app.register_blueprint(publish)
 app.register_blueprint(vote)
-app.register_blueprint(test)
+
+### using for dev only ### 
+#app.register_blueprint(test)
 
 app.config['JSON_AS_ASCII'] = False
 CORS(app)
