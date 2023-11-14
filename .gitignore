@@ -2,3 +2,7 @@ adminrole.txt
 apirole.txt
 .vercel
 venv
+test.py
+DDL.txt
+__pycache__
+backend/__pycache__
