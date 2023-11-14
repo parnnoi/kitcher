@@ -4,5 +4,4 @@ apirole.txt
 venv
 test.py
 DDL.txt
-__pycache__
-backend/__pycache__
+**/__pycache__/

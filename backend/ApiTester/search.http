@@ -1,0 +1,23 @@
+##################### Test API's Search.py #####################
+#Test Searching all recipe
+GET  http://127.0.0.1:5000/api/menu/all
+
+###
+#Test Searching recipe by name's memu
+@menuName = parn
+GET  http://127.0.0.1:5000/api/menu/name/{{menuName}}
+
+###
+#Test Searching recipe by categoryid
+@categoryid = 1
+GET  http://127.0.0.1:5000/api/menu/category/{{categoryid}}
+
+###
+#Test Searching recipe from favorite by uid
+@uid = 1
+GET  http://127.0.0.1:5000/api/menu/favorite/{{uid}}
+
+####
+#Test Searching recipe from menuinfo by createrid (uid)
+@uid = 1
+GET  http://127.0.0.1:5000/api/menu/creater/{{uid}}
