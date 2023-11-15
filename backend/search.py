@@ -20,12 +20,16 @@ def SearchALL():
     mycursor = mydb.cursor(dictionary=True)
     
     #get ALL recipe
-    sql = "SELECT *, COUNT(*) AS myCount FROM menu"
+    sql = "SELECT COUNT(*) AS myCount FROM menu"
     mycursor.execute(sql)
     result = mycursor.fetchall()
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
+        sql = "SELECT * FROM menu"
+        mycursor.execute(sql)
+        result = mycursor.fetchall()
+        
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
             result[i]['estimateTime'] = str(result[i]['estimateTime'])
@@ -42,7 +46,7 @@ def SearchByName(menuName):
     mycursor = mydb.cursor(dictionary=True)
     
     #get recipe by name
-    sql = "SELECT *, COUNT(*) AS myCount FROM menu WHERE menuName LIKE %s"
+    sql = "SELECT COUNT(*) AS myCount FROM menu WHERE menuName LIKE %s"
     menuName = '%' + menuName + '%'
     val = (menuName,)
     mycursor.execute(sql, val)
@@ -50,6 +54,11 @@ def SearchByName(menuName):
     isExists  = result[0]['myCount']
 
     if(isExists): #Have recipe in database
+        sql = "SELECT *FROM menu WHERE menuName LIKE %s"
+        val = (menuName,)
+        mycursor.execute(sql, val)
+        result = mycursor.fetchall()
+
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
             result[i]['estimateTime'] = str(result[i]['estimateTime'])
@@ -66,13 +75,18 @@ def SearchBycategory(categoryid):
     mycursor = mydb.cursor(dictionary=True)
     
     #get recipe by category
-    sql = "SELECT *, COUNT(*) AS myCount FROM menu WHERE categoryid = %s"
+    sql = "SELECT COUNT(*) AS myCount FROM menu WHERE categoryid = %s"
     val = (categoryid,)
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
+        sql = "SELECT * FROM menu WHERE categoryid = %s"
+        val = (categoryid,)
+        mycursor.execute(sql,val)
+        result = mycursor.fetchall()
+
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
             result[i]['estimateTime'] = str(result[i]['estimateTime'])
@@ -89,13 +103,18 @@ def SearchByfavorite(uid):
     mycursor = mydb.cursor(dictionary=True)
     
     #get recipe by category
-    sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate, COUNT(*) AS myCount FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s"
+    sql = "SELECT COUNT(*) AS myCount FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s"
     val = (uid,)
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
+        sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s"
+        val = (uid,)
+        mycursor.execute(sql,val)
+        result = mycursor.fetchall()
+    
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
             result[i]['estimateTime'] = str(result[i]['estimateTime'])
@@ -112,14 +131,18 @@ def SearchBycreater(uid):
     mycursor = mydb.cursor(dictionary=True)
     
     #get recipe by category
-    sql = "SELECT *, COUNT(*) AS myCount FROM menu WHERE createruid = %s"
+    sql = "SELECT COUNT(*) AS myCount FROM menu WHERE createruid = %s"
     val = (uid,)
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
-    mydb.close()
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
+        sql = "SELECT * FROM menu WHERE createruid = %s"
+        val = (uid,)
+        mycursor.execute(sql,val)
+        result = mycursor.fetchall()
+
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
             result[i]['estimateTime'] = str(result[i]['estimateTime'])

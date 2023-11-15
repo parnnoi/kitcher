@@ -15,9 +15,9 @@ GET  http://127.0.0.1:5000/api/menu/category/{{categoryid}}
 ###
 #Test Searching recipe from favorite by uid
 @uid = 1
-GET  http://127.0.0.1:5000/api/menu/favorite/{{uid}}
+GET  kitcherfromlocal.vercel.app/api/menu/favorite/{{uid}}
 
 ####
 #Test Searching recipe from menuinfo by createrid (uid)
 @uid = 1
-GET  http://127.0.0.1:5000/api/menu/creater/{{uid}}
+GET  kitcherfromlocal.vercel.app/api/menu/creater/{{uid}}

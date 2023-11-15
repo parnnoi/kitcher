@@ -1,0 +1,4 @@
+database: kitcher
+username: m1jbcw564xabe9b9e1ax
+host: aws.connect.psdb.cloud
+password: pscale_pw_C6Tn0cZ3SHIQUvvuGEfbNTHvMAiYmscTLDuB8ExGNT3

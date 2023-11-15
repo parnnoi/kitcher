@@ -19,7 +19,7 @@ def CreateFavorite():
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
     
-    sql = "SELECT *, COUNT(*) as myCount FROM favorite WHERE uid = %s AND menuid = %s"
+    sql = "SELECT COUNT(*) as myCount FROM favorite WHERE uid = %s AND menuid = %s"
     val = (data['uid'],data['menuid'])
     mycursor.execute(sql,val)
     result = mycursor.fetchall()

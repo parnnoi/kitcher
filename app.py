@@ -10,13 +10,13 @@ from backend.register import register
 from backend.watch import watch
 from backend.category import category
 from backend.search import search
-#from backend.recipe import recipe
+from backend.recipe import recipe
 from backend.favorite import favorite
-#from backend.publish import publish
+from backend.public import public
 from backend.vote import vote
 
 ### using for dev only ### 
-#from test import test
+#from backend.test import test
 
 ###########################################
 #to running
@@ -32,9 +32,9 @@ app.register_blueprint(register)
 app.register_blueprint(watch)
 app.register_blueprint(category)
 app.register_blueprint(search)
-#app.register_blueprint(recipe)
+app.register_blueprint(recipe)
 app.register_blueprint(favorite)
-#app.register_blueprint(publish)
+app.register_blueprint(public)
 app.register_blueprint(vote)
 
 ### using for dev only ### 
