@@ -5,14 +5,14 @@ import json
 import mysql.connector
 import datetime
 
-recipe = Blueprint("recipe", __name__)
-CORS(recipe)
+menu = Blueprint("menu", __name__)
+CORS(menu)
 host = dbsettings.host
 user = dbsettings.user
 password = dbsettings.password
 db = dbsettings.db
 
-@recipe.route("/api/menu/addread")
+@menu.route("/api/menu/addread")
 def ReadMenu():
     mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
     mycursor = mydb.cursor(dictionary=True)  # Return data as dictionaries
@@ -35,7 +35,7 @@ def ReadMenu():
 
 ############ Create  menu ############
 
-@recipe.route("/api/menu/add", methods = ['POST'])
+@menu.route("/api/menu/add", methods = ['POST'])
 def CreateMenu():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -142,7 +142,7 @@ def add_ingredients(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@recipe.route("/api/menu/add/ingredient/<menuid>", methods=['POST'])
+@menu.route("/api/menu/add/ingredient/<menuid>", methods=['POST'])
 def route_add_ingredient(menuid):
    
     data = request.get_json()
@@ -225,7 +225,7 @@ def add_tools(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@recipe.route("/api/menu/add/tool/<menuid>", methods=['POST'])
+@menu.route("/api/menu/add/tool/<menuid>", methods=['POST'])
 def route_add_tool(menuid):
    
     data = request.get_json()
@@ -388,7 +388,7 @@ def add_step_processv2(menuid, data):
     except Exception as e:
         return {"error": str(e)}, 500
 
-@recipe.route("/api/menu/add/stepdetail/<menuid>", methods=['POST'])
+@menu.route("/api/menu/add/stepdetail/<menuid>", methods=['POST'])
 def route_add_process_step(menuid):
    
     data = request.get_json()
@@ -399,7 +399,7 @@ def route_add_process_step(menuid):
 
 ############ Update  menu ############
 
-@recipe.route("/api/menu/update/<menuid>", methods=['PUT'])
+@menu.route("/api/menu/update/<menuid>", methods=['PUT'])
 def UpdateMenu(menuid):
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
@@ -453,7 +453,7 @@ def update_ingredients(menuid, data):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@recipe.route("/api/menu/update/ingredient/<menuid>", methods=['PUT'])
+@menu.route("/api/menu/update/ingredient/<menuid>", methods=['PUT'])
 def route_update_ingredient(menuid):
     data = request.get_json()
     result = update_ingredients(menuid, data)
@@ -489,7 +489,7 @@ def update_tool(menuid, data):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@recipe.route("/api/menu/update/tool/<menuid>", methods=['PUT'])
+@menu.route("/api/menu/update/tool/<menuid>", methods=['PUT'])
 def route_update_tool(menuid):
     data = request.get_json()
     result = update_tool(menuid, data)
@@ -526,7 +526,7 @@ def update_stepdetail(menuid, data):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@recipe.route("/api/menu/update/stepdetail/<menuid>", methods=['PUT'])
+@menu.route("/api/menu/update/stepdetail/<menuid>", methods=['PUT'])
 def route_update_stepdetail(menuid):
     data = request.get_json()
     result = update_stepdetail(menuid, data)
@@ -573,7 +573,7 @@ def delete_menu(menuid, createruid):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@recipe.route("/api/menu/<createruid>/<menuid>", methods=['DELETE'])
+@menu.route("/api/menu/<createruid>/<menuid>", methods=['DELETE'])
 def route_delete_menu(menuid, createruid):
     result = delete_menu(menuid, createruid)
     return make_response(jsonify(result), 200)
