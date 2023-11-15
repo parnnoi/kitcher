@@ -1,0 +1,17 @@
+POST http://127.0.0.1:5000/api/menu/public
+Content-Type: application/json
+
+{
+    "menuid": 2,
+    "publicStatus": 0
+}
+
+###
+
+PUT http://127.0.0.1:5000/api/menu/public/update
+Content-Type: application/json
+
+{
+    "menuid": 6,
+    "publicStatus": 0
+}

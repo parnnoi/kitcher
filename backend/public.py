@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
+import dbsettings
 import json
 import mysql.connector
 import datetime
@@ -8,29 +9,29 @@ import datetime
 #set " $env:FLASK_APP = "example.py" "
 #run " flask --debug run "
 
-app = Flask(__name__)
-app.config['JSON_AS_ASCII'] = False
-CORS(app)
-host = "localhost"
-user = "root"
-password = ""
-db = "kitcher"
+public = Blueprint("public", __name__)
+CORS(public)
+host = dbsettings.host
+user = dbsettings.user
+password = dbsettings.password
+db = dbsettings.db
 
 def public_exists(menuid, mycursor):
     # Check if the ingredient with the same name already exists for the given menuid
     query = "SELECT COUNT(*) AS cou FROM public WHERE menuid = %s"
-    mycursor.execute(query, (menuid,))
+    val = (menuid,)
+    mycursor.execute(query, val)
     count = mycursor.fetchone()['cou']
     return count > 0
 
-@app.route("/api/menu/public", methods = ['POST'])
+@public.route("/api/menu/public", methods = ['POST'])
 def CreatePublic():
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True) #return ข้อมูลแบบ dictionary ซึ่งมันเหมาะกับการส่งออกแบบ JSON อยู่แล้ว
     
     #Count createMenu by UID
-    sql = "INSERT INTO public (publicid, menuid, norder, publicStatus, updateDate) VALUES (%s, %s, %s, %s, %s)"
+    sql = "INSERT INTO public (publicid, menuid, norder, publicStatus, updateDate) VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP)"
 
     if public_exists(data['menuid'], mycursor):
         return make_response(jsonify({"message": "Error fetching pubblicid"}), 404)
@@ -43,18 +44,16 @@ def CreatePublic():
         publicid = mycursor.fetchall()[0]['count']
 
         norder_query = "SELECT MAX(norder) as countnor FROM public WHERE publicid = %s"
-        mycursor.execute(norder_query, (publicid,))
+        val = (publicid,)
+        mycursor.execute(norder_query, val)
         norder_result = mycursor.fetchone()
 
         if norder_result['countnor'] is not None:
             next_norder = norder_result['countnor'] + 1
-        else:
-        # If there are no existing records for this publicid, start with 1
+        else:# If there are no existing records for this publicid, start with 1
             next_norder = 1
 
-        data['updateDate'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        val = (publicid, data['menuid'], next_norder,  data['publicStatus'], data['updateDate'],)
+        val = (publicid, data['menuid'], next_norder,  data['publicStatus'],)
 
         mycursor.execute(sql, val)
         mydb.commit()
@@ -78,7 +77,7 @@ def update_public(data):
         
         update_query = "UPDATE public SET publicStatus = %s WHERE menuid = %s"
         
-        update_data = (data['publicStatus'], data['menuid'])
+        update_data = (data['publicStatus'], data['menuid'],)
         mycursor.execute(update_query, update_data)
             
         # Fetch the results after executing all queries
@@ -89,7 +88,7 @@ def update_public(data):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@app.route("/api/menu/public/update", methods = ['PUT'])
+@public.route("/api/menu/public/update", methods = ['PUT'])
 def route_update_public():
     data = request.get_json()
     result = update_public(data)

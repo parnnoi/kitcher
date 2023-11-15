@@ -1,0 +1,36 @@
+#Read user info from userinfo
+GET http://127.0.0.1:5000/api/login/6
+
+###
+
+#Login by username and password
+POST http://127.0.0.1:5000/api/login
+Content-Type: application/json
+
+{
+    "username": "5566123",
+    "password": "123"
+}
+
+###
+
+#Create cookie after login
+POST http://127.0.0.1:5000/api/login/cookie
+Content-Type: application/json
+
+{
+    "uid": "6",
+    "computerid": "LAPTOP-XD03"
+}
+
+###
+
+#Login by using cookie
+POST http://127.0.0.1:5000/api/login/cookie/bypass
+Content-Type: application/json
+
+
+{
+    "cookieid": "6",
+    "computerid": "LAPTOP-XD03"
+}

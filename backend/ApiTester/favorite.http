@@ -1,0 +1,14 @@
+##################### Test API's favorite.py #####################
+#Test Like recipe
+POST http://127.0.0.1:5000/api/menu/favorite
+Content-Type: application/json
+
+{
+    "uid": 1,
+    "menuid": 1
+}
+
+###
+#Test Deleting favorite's recipe
+@Dfavoriteid = 1
+DELETE  http://127.0.0.1:5000/api/menu/delete/{{Dfavoriteid}}
