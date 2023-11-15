@@ -8,7 +8,7 @@ POST http://127.0.0.1:5000/api/menu/add
 Content-Type: application/json
 
 # 2 case You can enter data 1 at a time.
-# Assume have uid = 1 and have category 1 only
+# Assume have createruid = 1 and have category 1 only
 #Case 1
   # {
   #   "createruid": 1,
@@ -19,7 +19,7 @@ Content-Type: application/json
 
 #Case 2
   {
-    "uid": 1,
+    "createruid": 1,
     "menuName": "Corndog",
     "estimateTime": "17 minutes",
     "categoryid": 1
