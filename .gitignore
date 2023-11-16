@@ -3,5 +3,5 @@ venv
 DDL.txt
 **/__pycache__/
 __pycache__
-apikey_planetscale.txtง
+apikey_planetscale.txt
 backend/test.py

@@ -171,18 +171,13 @@ Content-Type: application/json
 
 {
   "ingredients" : [
-    {"ingredientname": "Ingredient deh", "quantity": 100, "norder": 1},
-    {"ingredientname": "Ingredient Bird", "quantity": 120, "norder": 2},
-    {"ingredientname": "Ingredient C", "quantity": 35, "norder": 3},
-    {"ingredientname": "Ingredient D", "quantity": 62, "norder": 4},
-    {"ingredientname": "Ingredient E", "quantity": 1,"norder": 5},
-    {"ingredientname": "Ingredient F", "quantity": 4, "norder": 6},
-    {"ingredientname": "Ingredient G", "quantity": 9, "norder": 7},
-    {"ingredientname": "Ingredient H", "quantity": 34, "norder": 8},
-    {"ingredientname": "Ingredient I", "quantity": 126, "norder": 9},
-    {"ingredientname": "Ingredient J", "quantity": 621, "norder": 10},
-    {"ingredientname": "Ingredient K", "quantity": 216, "norder": 11},
-    {"ingredientname": "Ingredient L", "quantity": 216, "norder": 12}
+    {"ingredientname": "Ingredient deh", "quantity": 100},
+    {"ingredientname": "Ingredient Bird", "quantity": 120},
+    {"ingredientname": "Ingredient C", "quantity": 35},
+    {"ingredientname": "Ingredient D", "quantity": 62},
+    {"ingredientname": "Ingredient E", "quantity": 1},
+    {"ingredientname": "Ingredient F", "quantity": 4},
+    {"ingredientname": "Ingredient G", "quantity": 9}
   ]
  } 
 

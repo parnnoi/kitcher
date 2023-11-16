@@ -425,34 +425,104 @@ def UpdateMenu(menuid):
 
 ############ Update  ingredient ############
 
+        # sql = "SELECT MAX(norder) as myMax FROM... WHERE..."
+        # old = 11
+
+        # new = len(data['ingredients']) # 5
+
+        # # get the lower
+        # if(old < new):
+        #     lower = old
+        # else:
+        #     lower = new
+
+        # for i in range(lower)+1:
+        #     update_data = (data[i]['ingredientname'], data[i]['quantity'], menuid, i)
+
+        # if(new < old):
+        #     #ลบตัวที่เกินทิ้ง จาก lower+1 -> old
+        #     lower = new
+
+        # if(new > old):
+        #     #ให้ create เพิ่ม จาก lower+1 -> new
+        #     lower = old
+
+def renumber_norder_ingredient(menuid):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+
+        sql = "SELECT norder FROM ingredient WHERE menuid = %s ORDER BY norder"
+        val = (menuid,)
+        # Get the current norder values
+        mycursor.execute(sql, val)
+        current_norders = [row[0] for row in mycursor.fetchall()]
+
+        # Update norder values to be consecutive
+        for i, norder in enumerate(current_norders, start=1):
+            if norder != i:
+                sq_nor = "UPDATE ingredient SET norder = %s WHERE menuid = %s AND norder = %s"
+                va_nor = (i, menuid, norder)
+                mycursor.execute(sq_nor, va_nor )
+                mydb.commit()
+
+        return {"message": "Norder values renumbered successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
 def update_ingredients(menuid, data):
     try:
         mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
         mycursor = mydb.cursor()
         
         update_query = "UPDATE ingredient SET ingredientname = %s, quantity = %s WHERE menuid = %s AND norder = %s"
+        
+        delete_query ="DELETE FROM ingredient WHERE menuid = %s AND norder = %s"
 
-        affected_rows = 0
+        create_query = "INSERT INTO ingredient (ingredientid, menuid, norder, ingredientname, quantity) VALUES (%s, %s, %s, %s, %s)"
+        
+        # Get the maximum existing ingredientid
+        sql_max = "SELECT MAX(ingredientid) FROM ingredient"
+        mycursor.execute(sql_max)
+        result = mycursor.fetchone()
+        next_id = (result[0] + 1) if result[0] is not None else 1
 
-        for item in data['ingredients']:
-            # Update the existing ingredient by menuid and old_ingredientname
-            
-            update_data = (item['ingredientname'], item['quantity'], menuid, item['norder'])
+        # Get the count of existing ingredients for the given menuid
+        sql_count = "SELECT COUNT(*) FROM ingredient WHERE menuid = %s"
+        val_count = (menuid,)
+        mycursor.execute(sql_count, val_count )
+        old_data = mycursor.fetchone()[0]
+
+        # Determine the number of new ingredients
+        new_data = len(data['ingredients'])
+
+        # Update existing ingredients
+        for i, ingredient in enumerate(data['ingredients'], start=0):
+            update_data = (ingredient['ingredientname'], ingredient['quantity'], menuid, i + 1)
             mycursor.execute(update_query, update_data)
-            
-            affected_rows += mycursor.rowcount
+            mydb.commit()
 
-        if affected_rows == 0:
-            return {"message": "Ingredient don't have update"}, 404
+        if new_data < old_data:
+            for i in range(new_data + 1, old_data + 1):
+                # Delete redundant ingredients
+                delete_date =  (menuid, i)
+                mycursor.execute(delete_query, delete_date)
+                mydb.commit()
+        if new_data > old_data:
+        # Insert new ingredients
+            for i in range(old_data, new_data):
+                create_data = (next_id, menuid, i + 1, data['ingredients'][i]['ingredientname'], data['ingredients'][i]['quantity'])
+                mycursor.execute(create_query, create_data)
+                next_id += 1  # incrementing next_id for each new ingredient
+                mydb.commit()
 
-        # Fetch the results after executing all queries
-        mydb.commit()
+        renumber_norder_ingredient(menuid)
 
-        return {"message": "Ingredients updated successfully"}
+        return {"message": "ingredients updated successfully"}
 
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
-
 @menu.route("/api/menu/update/ingredient/<menuid>", methods=['PUT'])
 def route_update_ingredient(menuid):
     data = request.get_json()
@@ -461,28 +531,77 @@ def route_update_ingredient(menuid):
 
 ############ Update  tools ############
 
+def renumber_norder_tool(menuid):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+
+        # Get the current norder values
+        sql = "SELECT norder FROM tool WHERE menuid = %s ORDER BY norder"
+        val = (menuid,)
+        mycursor.execute(sql, val)
+        current_norders = [row[0] for row in mycursor.fetchall()]
+
+        # Update norder values to be consecutive
+        for i, norder in enumerate(current_norders, start=1):
+            if norder != i:
+                sq_nor = "UPDATE tool SET norder = %s WHERE menuid = %s AND norder = %s"
+                va_nor = (i, menuid, norder)
+                mycursor.execute(sq_nor, va_nor)
+                mydb.commit()
+
+        return {"message": "Norder values renumbered successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
 def update_tool(menuid, data):
     try:
         mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
         mycursor = mydb.cursor()
         
         update_query = "UPDATE tool SET toolname = %s WHERE menuid = %s AND norder = %s"
+        
+        delete_query ="DELETE FROM tool WHERE menuid = %s AND norder = %s"
 
-        affected_rows = 0
+        create_query = "INSERT INTO tool (toolid, menuid, norder, toolname) VALUES (%s, %s, %s, %s)"
+        
+        # Get the maximum existing toolid
+        sql_max = "SELECT MAX(toolid) FROM tool"
+        mycursor.execute(sql_max)
+        result = mycursor.fetchone()
+        next_id = (result[0] + 1) if result[0] is not None else 1
 
-        for item in data['toolkitchen']:
-            # Update the existing ingredient by menuid and old_ingredientname
-            
-            update_data = (item['toolname'], menuid, item['norder'])
+        # Get the count of existing tool for the given menuid
+        sql_count = "SELECT COUNT(*) FROM tool WHERE menuid = %s"
+        val_count = (menuid,)
+        mycursor.execute(sql_count, val_count )
+        old_data = mycursor.fetchone()[0]
+
+        # Determine the number of new tool
+        new_data = len(data['toolkitchen'])
+
+        # Update existing tool
+        for i, tool in enumerate(data['toolkitchen'], start=0):
+            update_data = (tool['toolname'], menuid, i + 1)
             mycursor.execute(update_query, update_data)
-            
-            affected_rows += mycursor.rowcount
+            mydb.commit()
 
-        if affected_rows == 0:
-            return {"message": "Tools don't have update"}, 404
+        if new_data < old_data:
+            for i in range(new_data + 1, old_data + 1):
+                # Delete redundant tool
+                delete_date =  (menuid, i)
+                mycursor.execute(delete_query, delete_date)
+                mydb.commit()
+        if new_data > old_data:
+        # Insert new tool
+            for i in range(old_data, new_data):
+                create_data = (next_id, menuid, i + 1, data['toolkitchen'][i]['toolname'])
+                mycursor.execute(create_query, create_data)
+                next_id += 1  # incrementing next_id for each new tool
+                mydb.commit()
 
-        # Fetch the results after executing all queries
-        mydb.commit()
+        renumber_norder_tool(menuid)
 
         return {"message": "Tool updated successfully"}
 
@@ -498,28 +617,78 @@ def route_update_tool(menuid):
 
 ############ Update  step-detail ############
 
+def renumber_norder_step(menuid):
+    try:
+        mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
+        mycursor = mydb.cursor()
+
+        # Get the current norder values
+        sql = "SELECT norder FROM step WHERE menuid = %s ORDER BY norder"
+        val = (menuid,)
+        mycursor.execute(sql, val)
+        current_norders = [row[0] for row in mycursor.fetchall()]
+
+        # Update norder values to be consecutive
+        for i, norder in enumerate(current_norders, start=1):
+            if norder != i:
+                sq_nor = "UPDATE step SET norder = %s WHERE menuid = %s AND norder = %s"
+                va_nor = (i, menuid, norder)
+                mycursor.execute(sq_nor, va_nor)
+                mydb.commit()
+
+        return {"message": "Norder values renumbered successfully"}
+
+    except mysql.connector.Error as err:
+        return {"error": f"MySQL Error: {err}"}, 500
+
 def update_stepdetail(menuid, data):
     try:
         mydb = mysql.connector.connect(host=host, user=user, password=password, database=db)
         mycursor = mydb.cursor()
         
         update_query = "UPDATE step SET detail = %s WHERE menuid = %s AND norder = %s"
+        
+        delete_query ="DELETE FROM step WHERE menuid = %s AND norder = %s"
 
-        affected_rows = 0
+        create_query = "INSERT INTO step (stepid, menuid, norder, detail) VALUES (%s, %s, %s, %s)"
+        
+        # Get the maximum existing stepid
+        sql_max = "SELECT MAX(stepid) FROM step"
+        mycursor.execute(sql_max)
+        result = mycursor.fetchone()
+        next_id = (result[0] + 1) if result[0] is not None else 1
 
-        for item in data['stepdetail']:
-            # Update the existing ingredient by menuid and old_ingredientname
-            
-            update_data = (item['detail'], menuid, item['norder'])
+        # Get the count of existing step for the given menuid
+        sql_count = "SELECT COUNT(*) FROM step WHERE menuid = %s"
+        val_count = (menuid,)
+        mycursor.execute(sql_count, val_count )
+        old_data = mycursor.fetchone()[0]
+
+        # Determine the number of new step
+        new_data = len(data['stepdetail'])
+
+        # Update existing step
+        for i, step in enumerate(data['stepdetail'], start=0):
+            update_data = (step['detail'], menuid, i + 1)
             mycursor.execute(update_query, update_data)
-            
-            affected_rows += mycursor.rowcount
+            mydb.commit()
 
-        if affected_rows == 0:
-            return {"message": "Detail don't have update"}, 404
+        if new_data < old_data:
+            for i in range(new_data + 1, old_data + 1):
+                # Delete redundant step
+                delete_date =  (menuid, i)
+                mycursor.execute(delete_query, delete_date)
+                mydb.commit()
+        if new_data > old_data:
+        # Insert new step
+            for i in range(old_data, new_data):
+                create_data = (next_id, menuid, i + 1, data['stepdetail'][i]['detail'])
+                mycursor.execute(create_query, create_data)
+                next_id += 1  # incrementing next_id for each new step
+                mydb.commit()
 
-        # Fetch the results after executing all queries
-        mydb.commit()
+        renumber_norder_step(menuid)
+
 
         return {"message": "Detail updated successfully"}
 
