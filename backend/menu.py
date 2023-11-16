@@ -695,7 +695,7 @@ def update_stepdetail(menuid, data):
     except mysql.connector.Error as err:
         return {"error": f"MySQL Error: {err}"}, 500
 
-@menu.route("/api/menu/update/stepdetail/<menuid>", methods=['PUT'])
+@menu.route("/api/menu/update/step/<menuid>", methods=['PUT'])
 def route_update_stepdetail(menuid):
     data = request.get_json()
     result = update_stepdetail(menuid, data)

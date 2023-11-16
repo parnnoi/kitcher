@@ -20,13 +20,13 @@ def SearchALL():
     mycursor = mydb.cursor(dictionary=True)
     
     #get ALL recipe
-    sql = "SELECT COUNT(*) AS myCount FROM menu"
+    sql = "SELECT COUNT(*) AS myCount FROM menu m LEFT JOIN public p ON m.menuid = p.menuid WHERE p.publicstatus = True"
     mycursor.execute(sql)
     result = mycursor.fetchall()
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT * FROM menu"
+        sql = "SELECT * FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid WHERE p.publicstatus = True"
         mycursor.execute(sql)
         result = mycursor.fetchall()
         
