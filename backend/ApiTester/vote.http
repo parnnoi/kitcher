@@ -1,0 +1,10 @@
+#Add new vote
+POST http://127.0.0.1:5000/api/vote
+Content-Type: application/json
+
+{
+    "uid": "5",
+    "menuid": "1",
+    "score": "5",
+    "comment": "dummyComment"
+}

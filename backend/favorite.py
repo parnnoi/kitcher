@@ -1,58 +1,60 @@
 from flask import Flask, request, jsonify, make_response, Blueprint, render_template
 from flask_cors import CORS
+import dbsettings
 import json
 import mysql.connector
 import datetime
 
 favorite = Blueprint("favorite", __name__)
 CORS(favorite)
-host = "localhost"
-user = "root"
-password = ""
-db = "kitcher"
+host = dbsettings.host
+user = dbsettings.user
+password = dbsettings.password
+db = dbsettings.db
 
-@favorite.route("/api/recipe/favorite", methods = ["POST"])
+@favorite.route("/api/menu/favorite", methods = ["POST"])
 def CreateFavorite():
     #connect to database
     data = request.get_json()
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
     
-    sql = "SELECT * FROM favorite WHERE uid = %s AND menuid = %s"
+    sql = "SELECT COUNT(*) as myCount FROM favorite WHERE uid = %s AND menuid = %s"
     val = (data['uid'],data['menuid'])
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
-    count = mycursor.rowcount
-    if(count == 1):            
-        return make_response(jsonify({"Message": "The information already exists"}), 400)
+    isExists  = result[0]['myCount']
+
+    if(isExists):            
+        return make_response(jsonify({"status": "The information already exists"}), 400)
+    
     else:
         #get lastest favoriteid
         sql = "SELECT MAX(favoriteid) AS myMax FROM favorite"
         mycursor.execute(sql)
         result = mycursor.fetchall()
+
         if(result[0]['myMax'] == None):
             newfavoriteId = 1
         else:
             newfavoriteId = int(result[0]['myMax']) + 1 
     
         #Like the recipe
-        sql = "INSERT INTO favorite VALUES(%s, %s, %s, %s, %s)"
-        data['favoriteDate'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data['favoriteStatus'] = True
-        val = (newfavoriteId, data['uid'], data['menuid'], data['favoriteStatus'], data['favoriteDate'])
+        sql = "INSERT INTO favorite VALUES(%s, %s, %s, True, CURRENT_TIMESTAMP)"
+        val = (newfavoriteId, data['uid'], data['menuid'],)
         mycursor.execute(sql, val)
         mydb.commit()
     
-        return make_response(jsonify({"Message": "Successes", "count": mycursor.rowcount}), 201)
+        return make_response(jsonify({"status": "Successes", "count": mycursor.rowcount}), 201)
 
-@favorite.route("/api/recipe/delete/<favoriteid>", methods = ["DELETE"])
+@favorite.route("/api/menu/delete/<favoriteid>", methods = ["DELETE"])
 def DeleteFavorite(favoriteid):
     #connect to database
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
     
     #Like the recipe
-    sql = "DELETE FROM favorite WHERE favoriteid = %s"
+    sql = "UPDATE favorite SET favoriteStatus = False WHERE favoriteid = %s"
     val = (favoriteid,)
     mycursor.execute(sql, val)
     mydb.commit()

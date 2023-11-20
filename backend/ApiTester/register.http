@@ -1,0 +1,19 @@
+#register new user
+POST http://127.0.0.1:5000/api/register
+Content-Type: application/json
+
+{
+    "fName": "pn002",
+    "lName": "kitcher",
+    "email": "parnnoi@kitcher.com",
+    "telno": "0023",
+    "username": "5566123",
+    "password": "123456",
+    "role": "U"
+}
+
+
+###
+
+#verify user from username
+GET http://127.0.0.1:5000/api/register/asd

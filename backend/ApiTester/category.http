@@ -1,0 +1,30 @@
+#create new category
+POST http://127.0.0.1:5000/api/category
+Content-Type: application/json
+
+{
+    "categoryName": "Hungry",
+    "detail": "I'm Hungry so much"
+}
+
+###
+
+#update category from categoryid
+PUT http://127.0.0.1:5000/api/category/update
+Content-Type: application/json
+
+{
+    "categoryid": "3",
+    "categoryName": "Hello",
+    "detail": "I'm Hungry so much"
+}
+
+###
+
+#get every catefory from db
+GET kitcherfromlocal.vercel.app/api/category/all
+
+###
+
+#test server
+GET http://127.0.0.1:5000/api/category/all
