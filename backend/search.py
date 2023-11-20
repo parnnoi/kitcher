@@ -27,7 +27,7 @@ def SearchALL():
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = True ORDER BY avgVote DESC,menuName ASC"
+        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = True ORDER BY avgVote DESC,menuName ASC"
         mycursor.execute(sql)
         result = mycursor.fetchall()
         
@@ -57,7 +57,7 @@ def SearchByName(menuName):
     isExists  = result[0]['myCount']
 
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*,p.*, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = TRUE AND m.menuName LIKE %s ORDER BY avgVote DESC, m.menuName ASC"
+        sql = "SELECT m.*,p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid LEFT JOIN userinfo u ON m.createruid = u.uid WHERE p.publicstatus = TRUE AND m.menuName LIKE %s ORDER BY avgVote DESC, m.menuName ASC"
         val = (menuName,)
         mycursor.execute(sql, val)
         result = mycursor.fetchall()
@@ -87,7 +87,7 @@ def SearchBycategory(categoryid):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, c.categoryName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid LEFT JOIN category c ON c.categoryid = m.categoryid WHERE p.publicstatus = TRUE AND c.categoryid = %s ORDER BY avgVote DESC, m.menuName ASC"
+        sql = "SELECT m.*, p.*, c.categoryName, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid LEFT JOIN category c ON c.categoryid = m.categoryid LEFT JOIN userinfo u ON m.createruid = u.uid WHERE p.publicstatus = TRUE AND c.categoryid = %s ORDER BY avgVote DESC, m.menuName ASC"
         val = (categoryid,)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -117,7 +117,7 @@ def SearchByfavorite(uid):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s ORDER BY f.favoriteDate ASC,menuName ASC"
+        sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate, u.fName, u.lName FROM menu m, favorite f, userinfo u WHERE m.createruid = u.uid AND f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s ORDER BY f.favoriteDate ASC,menuName ASC"
         val = (uid,)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -146,7 +146,7 @@ def SearchBycreater(uid):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*,p.*, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = TRUE AND m.createruid = %s ORDER BY f.favoriteDate ASC, m.menuName ASC"
+        sql = "SELECT m.*,p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid LEFT JOIN userinfo u ON m.createruid = u.uid WHERE p.publicstatus = TRUE AND m.createruid = %s ORDER BY f.favoriteDate ASC, m.menuName ASC"
         val = (uid,)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
