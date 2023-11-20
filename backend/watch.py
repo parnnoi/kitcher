@@ -19,12 +19,14 @@ def watchmenu(menuid):
     mycursor = mydb.cursor(dictionary=True)
 
     #check if menu is exist or not
-    sql = "SELECT COUNT(*) as myCount FROM menu WHERE menuid = %s"
+    sql = "SELECT m.createruid, p.publicstatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid WHERE m.menuid = %s"
     val = (menuid,)
     mycursor.execute(sql, val)
-    numMenu = mycursor.fetchall()
-    isExists = numMenu[0]['myCount']
+    menuInfo = mycursor.fetchone()
+    print(menuInfo)
+    isExists = menuInfo['publicstatus'] or menuInfo['createruid'] == data['uid']
 
+    #check public status of manu
     if(isExists): #have menu in database
         #add to visitmenu
         #get max visitid
@@ -111,5 +113,7 @@ def watchmenu(menuid):
         return make_response(jsonify(menuData), 200)
 
     else: #menu is not exists
-        return make_response(jsonify({"status": "not found"}), 404)
+        if menuInfo['publicstatus'] == 0:
+            return make_response(jsonify({"status": "this menu is private, access denied"}), 403)
+        return make_response(jsonify({"status": "menu not found"}), 404)
     
