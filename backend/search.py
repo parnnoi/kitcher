@@ -117,7 +117,7 @@ def SearchByfavorite(uid):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s ORDER BY avgVote DESC,menuName ASC"
+        sql = "SELECT m.*, f.favoriteid, f.favoriteStatus, f.favoriteDate FROM menu m, favorite f WHERE f.favoriteStatus = True AND m.menuid = f.menuid AND f.uid = %s ORDER BY f.favoriteDate ASC,menuName ASC"
         val = (uid,)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -146,7 +146,7 @@ def SearchBycreater(uid):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*,p.*, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = TRUE AND m.createruid = %s ORDER BY avgVote DESC, m.menuName ASC"
+        sql = "SELECT m.*,p.*, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN favorite f ON f.menuid = m.menuid WHERE p.publicstatus = TRUE AND m.createruid = %s ORDER BY f.favoriteDate ASC, m.menuName ASC"
         val = (uid,)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
