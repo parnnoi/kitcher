@@ -20,7 +20,7 @@ def SearchALL(pageNum):
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
 
-    #define number of data
+    #Set the amount of each data set.
     pageNum = int(pageNum) * 100
     if(pageNum == 0): #if page is 0
         return make_response(jsonify({"status": "not found"}), 404)
@@ -55,7 +55,7 @@ def SearchByName(menuName,pageNum):
     mydb = mysql.connector.connect(host=host, user=user, password=password, db=db)
     mycursor = mydb.cursor(dictionary=True)
     
-    #define number of data
+    #Set the amount of each data set.
     pageNum = int(pageNum) * 100
     if(pageNum == 0): #if number of page is 0
         return make_response(jsonify({"status": "not found"}), 404)
