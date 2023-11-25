@@ -91,5 +91,6 @@ def update_public(data):
 @public.route("/api/menu/public/update", methods = ['PUT'])
 def route_update_public():
     data = request.get_json()
+    data = request.get_data
     result = update_public(data)
     return make_response(jsonify(result), 200)

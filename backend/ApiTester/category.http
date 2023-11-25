@@ -1,3 +1,5 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 #create new category
 POST http://127.0.0.1:5000/api/category
 Content-Type: application/json

@@ -1,5 +1,7 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 #Read user info from userinfo
-POST http://127.0.0.1:5000/api/menu/2
+POST {{domain}}/api/menu/1
 Content-Type: application/json
 
 {
@@ -7,3 +9,6 @@ Content-Type: application/json
 }
 
 ###
+
+#Read user info from userinfo
+GET http://127.0.0.1:5000/image/4

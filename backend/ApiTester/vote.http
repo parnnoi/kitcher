@@ -1,3 +1,5 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 #Add new vote
 POST http://127.0.0.1:5000/api/vote
 Content-Type: application/json

@@ -1,3 +1,5 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 ##################### Test API's Search.py #####################
 #Test Searching all recipe
 GET  http://127.0.0.1:5000/api/menu/all
