@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response, Blueprint, render_template
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template, Response
 from flask_cors import CORS
 import dbsettings
 import json
@@ -89,7 +89,9 @@ def watchmenu(menuid):
         menuData['numTool'] = len(menuData['tool'])
 
         menuData['status'] = "found"
-        return make_response(jsonify(menuData), 200)
+        json_string = json.dumps(menuData,ensure_ascii = False)
+        response = Response(json_string, status=200, content_type="application/json; charset=utf-8")
+        return response
 
     else: #menu is not exists
         if menuInfo['publicstatus'] == 0:

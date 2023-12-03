@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response, Blueprint, render_template
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template, Response
 from flask_cors import CORS
 import dbsettings
 import json
@@ -78,6 +78,8 @@ def getcategoryid():
         result = mycursor.fetchall()
 
         result[0]['status'] = "succuss"
-        return make_response(jsonify(result), 200)
+        json_string = json.dumps(result,ensure_ascii = False)
+        response = Response(json_string, status=200, content_type="application/json; charset=utf-8")
+        return response
     else:
         return make_response(jsonify({"status": "not found"}), 404)

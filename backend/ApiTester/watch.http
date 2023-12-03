@@ -11,4 +11,14 @@ Content-Type: application/json
 ###
 
 #Read user info from userinfo
+POST http://127.0.0.1:5000/api/menu/1
+Content-Type: application/json
+
+{
+    "uid": 1
+}
+
+###
+
+#Read user info from userinfo
 GET http://127.0.0.1:5000/image/4
