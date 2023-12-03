@@ -1,11 +1,11 @@
 @domain = {{$dotenv API_DOMAIN}}
 
 #create new category
-POST http://127.0.0.1:5000/api/category
+POST {{domain}}/api/category
 Content-Type: application/json
 
 {
-    "categoryName": "Hungry",
+    "categoryName": "อาหารเกาหลี",
     "detail": "I'm Hungry so much"
 }
 
