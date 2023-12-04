@@ -2,17 +2,17 @@
 
 ##################### Test API's Search.py #####################
 #Test Searching all recipe
-GET  http://127.0.0.1:5000/api/menu/all
+GET  http://127.0.0.1:5000/api/menu/all/1
 
 ###
 #Test Searching recipe by name's memu
 @menuName = parn
-GET  http://127.0.0.1:5000/api/menu/name/{{menuName}}
+GET  http://127.0.0.1:5000/api/menu/name/{{menuName}}/1
 
 ###
 #Test Searching recipe by categoryid
 @categoryid = 1
-GET  http://127.0.0.1:5000/api/menu/category/{{categoryid}}
+GET  http://127.0.0.1:5000/api/menu/category/{{categoryid}}/1
 
 ###
 #Test Searching recipe from favorite by uid
