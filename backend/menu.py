@@ -113,18 +113,17 @@ def ingredient_exists_bulk(menuid, ingredient_names, mycursor):
 
 def add_ingredients(menuid, data, mycursor, mydb):
     try:
-        print(menuid)
         logging.info("add_ingredients: Start")
 
         mycursor.execute("SELECT MAX(ingredientid) AS maxin FROM ingredient")
         result = mycursor.fetchone()
         next_id = result['maxin'] + 1 if result and result['maxin'] is not None else 1
-        print(next_id)
+
         norder_query = "SELECT MAX(norder) AS maxnor FROM ingredient WHERE menuid = %s"
         mycursor.execute(norder_query, (menuid,))
         result = mycursor.fetchone()
         next_norder = result['maxnor'] + 1 if result and result['maxnor'] is not None else 1
-        print(next_norder)
+
         query = "INSERT INTO ingredient (ingredientid, menuid, norder, ingredientname, quantity) VALUES (%s, %s, %s, %s, %s)"
 
         # Store warnings
@@ -134,7 +133,7 @@ def add_ingredients(menuid, data, mycursor, mydb):
         existing_ingredients = ingredient_exists_bulk(menuid, ingredient_names, mycursor)
 
         for item in data['ingredients']:
-            print(item)
+
             ingredientname = item['ingredientname']
             quantity = item['quantity']
 
