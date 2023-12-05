@@ -25,8 +25,13 @@ def CreateFavorite():
     result = mycursor.fetchall()
     isExists  = result[0]['myCount']
 
-    if(isExists):            
-        return make_response(jsonify({"status": "The information already exists"}), 400)
+    if(isExists):
+        sql = "UPDATE favorite SET favoriteStatus = True WHERE uid = %s AND menuid = %s"     
+        val = (data['uid'],data['menuid'])
+        mycursor.execute(sql,val)    
+        mydb.commit()
+           
+        return make_response(jsonify({"status": "favoriteStatis is setted to True for all case"}), 200)
     
     else:
         #get lastest favoriteid
