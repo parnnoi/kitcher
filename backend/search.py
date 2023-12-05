@@ -35,7 +35,7 @@ def SearchALL(pageNum):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
+        sql = "SELECT m.*, p.publicid, p.publicStatus, p.updateDate, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
         val = (data["uid"], pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -72,7 +72,7 @@ def SearchByName(menuName,pageNum):
     isExists  = result[0]['myCount']
 
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND m.menuName LIKE %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
+        sql = "SELECT m.*, p.publicid, p.publicStatus, p.updateDate, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND m.menuName LIKE %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
         val = (data['uid'], menuName, pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql, val)
         result = mycursor.fetchall()
@@ -108,7 +108,7 @@ def SearchBycategory(categoryid, pageNum):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND m.categoryid = %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
+        sql = "SELECT m.*, p.publicid, p.publicStatus, p.updateDate, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND m.categoryid = %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
         val = (data['uid'], categoryid, pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -144,7 +144,7 @@ def SearchByfavorite(pageNum):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND f.favoriteStatus = True ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
+        sql = "SELECT m.*, p.publicid, p.publicStatus, p.updateDate, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE p.publicstatus = True AND f.favoriteStatus = True ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
         val = (data['uid'], pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
@@ -180,10 +180,11 @@ def SearchBycreater(pageNum):
     isExists  = result[0]['myCount']
     
     if(isExists): #Have recipe in database
-        sql = "SELECT m.*, p.*, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON f.menuid = m.menuid WHERE m.createruid = %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
+        sql = "SELECT m.*, p.publicid, p.publicStatus, p.updateDate, u.fName, u.lName, IF(ISNULL(f.favoriteStatus),FALSE ,TRUE) AS favoriteStatus, f.favoriteid FROM menu m LEFT JOIN public p ON m.menuid = p.menuid LEFT JOIN userinfo u ON m.createruid = u.uid LEFT JOIN (SELECT * FROM favorite WHERE uid = %s) f ON m.menuid = f.menuid WHERE m.createruid = %s ORDER BY avgVote DESC,menuName ASC LIMIT %s, %s"
         val = (data['uid'], data['uid'], pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
+        print(result)
 
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])
