@@ -137,7 +137,7 @@ def SearchByfavorite(pageNum):
         return make_response(jsonify({"status": "not found"}), 404)
     
     #get recipe by category
-    sql = "SELECT COUNT(*) AS myCount FROM menu m LEFT JOIN favorite f ON m.menuid = f.menuid WHERE p.publicstatus = True AND f.favoriteStatus = True AND f.uid = %s AND f.favoriteStatus = True LIMIT %s, %s"
+    sql = "SELECT COUNT(*) AS myCount FROM menu m LEFT JOIN favorite f ON m.menuid = f.menuid LEFT JOIN public p ON p.menuid = m.menuid WHERE p.publicstatus = True AND f.favoriteStatus = True AND f.uid = %s AND f.favoriteStatus = True LIMIT %s, %s"
     val = (data['uid'], pageNum - rangeReadPage, pageNum)
     mycursor.execute(sql,val)
     result = mycursor.fetchall()
