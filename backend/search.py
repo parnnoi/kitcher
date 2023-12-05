@@ -184,7 +184,6 @@ def SearchBycreater(pageNum):
         val = (data['uid'], data['uid'], pageNum - rangeReadPage, pageNum)
         mycursor.execute(sql,val)
         result = mycursor.fetchall()
-        print(result)
 
         for i in range(isExists):
             result[i]['createdDate'] = str(result[i]['createdDate'])

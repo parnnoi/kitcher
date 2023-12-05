@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ####
 #Test Searching recipe from menuinfo by createrid (uid)
-POST  http://127.0.0.1:5000/api/menu/creater/1
+POST  {{domain}}/api/menu/creater/1
 Content-Type: application/json
 
 {
