@@ -1,23 +1,48 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 ##################### Test API's Search.py #####################
 #Test Searching all recipe
-GET  http://127.0.0.1:5000/api/menu/all
+POST  http://127.0.0.1:5000/api/menu/all/1
+Content-Type: application/json
+
+{
+    "uid": 1
+}
 
 ###
 #Test Searching recipe by name's memu
-@menuName = parn
-GET  http://127.0.0.1:5000/api/menu/name/{{menuName}}
+@menuName = Corn
+POST  http://127.0.0.1:5000/api/menu/name/{{menuName}}/1
+Content-Type: application/json
+
+{
+    "uid": 1
+}
 
 ###
 #Test Searching recipe by categoryid
 @categoryid = 1
-GET  http://127.0.0.1:5000/api/menu/category/{{categoryid}}
+POST  http://127.0.0.1:5000/api/menu/category/{{categoryid}}/1
+Content-Type: application/json
+
+{
+    "uid": 1
+}
 
 ###
 #Test Searching recipe from favorite by uid
-@uid = 1
-GET  kitcherfromlocal.vercel.app/api/menu/favorite/{{uid}}
+POST  http://127.0.0.1:5000/api/menu/favorite/1
+Content-Type: application/json
+
+{
+    "uid": 6
+}
 
 ####
 #Test Searching recipe from menuinfo by createrid (uid)
-@uid = 1
-GET  kitcherfromlocal.vercel.app/api/menu/creater/{{uid}}
+POST  http://127.0.0.1:5000/api/menu/creater/1
+Content-Type: application/json
+
+{
+    "uid": 1
+}

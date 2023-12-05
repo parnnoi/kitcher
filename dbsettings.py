@@ -1,12 +1,11 @@
-domain = "kitcherfromlocal.vercel.app"
+import os
+from dotenv import load_dotenv
 
-# host = "sql12.freesqldatabase.com"
-# user = "sql12661888"
-# password = "qGTLcNPmDQ"
-# db = "sql12661888"
+load_dotenv()
 
-db = "kitcher"
-user = "m1jbcw564xabe9b9e1ax"
-host = "aws.connect.psdb.cloud"
-password = "pscale_pw_C6Tn0cZ3SHIQUvvuGEfbNTHvMAiYmscTLDuB8ExGNT3"
+domain = os.getenv('API_DOMAIN')
 
+db = os.getenv('PLANETSCALE_API_DB')
+user = os.getenv('PLANETSCALE_API_USER')
+host = os.getenv('PLANETSCALE_API_HOST')
+password = os.getenv('PLANETSCALE_API_PASSWORD')

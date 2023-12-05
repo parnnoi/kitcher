@@ -65,4 +65,4 @@ def verify(username):
         return make_response(jsonify({"status": "exists"}), 200)
 
     else: #user is not exists
-        return make_response(jsonify({"status": "not exists"}), 200)
+        return make_response(jsonify({"status": "not exists"}), 404)

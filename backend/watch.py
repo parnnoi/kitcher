@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, make_response, Blueprint, render_template
+from flask import Flask, request, jsonify, make_response, Blueprint, render_template, Response
 from flask_cors import CORS
 import dbsettings
 import json
@@ -46,71 +46,52 @@ def watchmenu(menuid):
         mydb.commit()
 
         #initial data to response
-        menuData = [{}]
+        menuData = {}
 
         #get menu description
-        sql = "SELECT * FROM menu m LEFT JOIN category c ON m.categoryid = c.categoryid WHERE m.menuid = %s"
+        sql = "SELECT m.*, c.*, u.fName, u.lName, p.publicStatus, f.favoriteStatus  FROM menu m LEFT JOIN category c ON m.categoryid = c.categoryid LEFT JOIN userinfo u ON u.uid = m.createruid LEFT JOIN favorite f ON f.menuid = m.menuid LEFT JOIN public p ON p.menuid = m.menuid WHERE m.menuid = %s"
         val = (menuid,)
         mycursor.execute(sql, val)
         menu = mycursor.fetchall()
 
         #add to data
-        menuData[0]['menuDescription'] = menu[0]
-        menuData[0]['menuDescription']['createdDate'] = str(menuData[0]['menuDescription']['createdDate'])
-        menuData[0]['menuDescription']['estimateTime'] = str(menuData[0]['menuDescription']['estimateTime'])
+        menuData['menuDescription'] = menu[0]
+        menuData['menuDescription']['createdDate'] = str(menuData['menuDescription']['createdDate'])
+        menuData['menuDescription']['estimateTime'] = str(menuData['menuDescription']['estimateTime'])
 
         #get ingredients
-        sql = "SELECT * FROM ingredient WHERE menuid = %s"
+        sql = "SELECT ingredientname, norder, quantity FROM ingredient WHERE menuid = %s"
         val = (menuid,)
         mycursor.execute(sql, val)
         ingredient = mycursor.fetchall()
 
         #add to ingredient
-        menuData[0]['ingredient'] = ingredient
+        menuData['ingredient'] = ingredient
 
         #get tool
-        sql = "SELECT * FROM tool WHERE menuid = %s"
+        sql = "SELECT toolname, norder FROM tool WHERE menuid = %s"
         val = (menuid,)
         mycursor.execute(sql, val)
         tool = mycursor.fetchall()
 
         #add to tool
-        menuData[0]['tool'] = tool
+        menuData['tool'] = tool
 
         #find number of step
-        sql = "SELECT MAX(norder) as myMax FROM step WHERE menuid = %s"
+        sql = "SELECT stepname, norder FROM step WHERE menuid = %s"
         val = (menuid,)
         mycursor.execute(sql, val)
         result = mycursor.fetchall()
-        numStep = result[0]['myMax']
 
-        if numStep == None:
-            print("no step")
-        else:
-            for i in range(numStep):
-                #get step id
-                n = int(int(i) + int(1))
-                sql = "SELECT * FROM step WHERE menuid = %s AND norder = %s"
-                val = (menuid, n,)
-                mycursor.execute(sql, val)
-                result = mycursor.fetchall()
-                stepid = int(result[0]['stepid'])
+        # add to step
+        menuData['step'] = result
 
-                #add to data
-                stepName = 'step' + str(n)
-                menuData[0][stepName] = result[0]
+        menuData['numTool'] = len(menuData['tool'])
 
-                #get every process by using stepid
-                sql = "SELECT * FROM process WHERE stepid = %s"
-                val = (stepid,)
-                mycursor.execute(sql, val)
-                result = mycursor.fetchall()
-
-                #add to data
-                menuData[0][stepName]['process'] = result
-
-            menuData[0]['status'] = "found"
-        return make_response(jsonify(menuData), 200)
+        menuData['status'] = "found"
+        json_string = json.dumps(menuData,ensure_ascii = False)
+        response = Response(json_string, status=200, content_type="application/json; charset=utf-8")
+        return response
 
     else: #menu is not exists
         if menuInfo['publicstatus'] == 0:

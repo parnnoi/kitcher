@@ -1,3 +1,5 @@
+@domain = {{$dotenv API_DOMAIN}}
+
 ##################### Test API's favorite.py #####################
 #Test Like recipe
 POST http://127.0.0.1:5000/api/menu/favorite
