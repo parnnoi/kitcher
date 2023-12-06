@@ -2,7 +2,7 @@
 DELETE http://127.0.0.1:5000/api/menu/1/1
 
 ###
-POST http://127.0.0.1:5000/api/menu/addss
+POST http://127.0.0.1:5000/api/menu/adds
 Content-Type: application/json
 
   {
@@ -24,18 +24,9 @@ Content-Type: application/json
     {"ingredientname": "Ingredient K", "quantity": 216}
   ] , 
   "kitchentools": [
-    "Chef's Knife",
-    "Cutting Board",
-    "Mixing Bowls",
-    "Whisk",
-    "Measuring Cups",
-    "Measuring Spoons",
-    "Spatula",
-    "Frying Pan",
-    "Pot",
-    "Peeler",
-    "Grater",
-    "Can Opener"
+    "Chef's Knife",    "Cutting Board",    "Mixing Bowls",    "Whisk",
+    "Measuring Cups",    "Measuring Spoons",    "Spatula",    "Frying Pan",    "Pot",
+    "Peeler",    "Grater",    "Can Opener"
   ] ,
   "stepsdetail": [
     "Cut ingredient",
@@ -69,18 +60,9 @@ Content-Type: application/json
     {"ingredientname": "Ingredient K", "quantity": 216}
   ] , 
   "kitchentools": [
-    "Chef's K",
-    "Cutting B",
-    "Mixing B",
-    "W",
-    "Measuring ",
-    "Measuring Spoons",
-    "Spatula",
-    "Frying Pan",
-    "Pot",
-    "Peeler",
-    "Grater",
-    "Can Opener"
+    "Chef's K",    "Cutting B",    "Mixing B",    "W",    "Measuring ",
+    "Measuring Spoons",    "Spatula",    "Frying Pan",    "Pot",    "Peeler",
+    "Grater",    "Can Opener"
   ] ,
   "stepsdetail": [
     "Cut you",

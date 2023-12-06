@@ -61,7 +61,7 @@ def route_delete_menu(menuid, createruid):
 
 ############################################## POST ##############################################
 
-@menu.route("/api/menu/addss", methods=['POST'])
+@menu.route("/api/menu/adds", methods=['POST'])
 def CreateMenu():
     try:
         logging.info("CreateMenu: Start")
@@ -247,7 +247,7 @@ def add_steps(menuid, data, mycursor, mydb):
         else:# If there are no existing records for this menuid, start with 1
             next_norder = 1
 
-        query = "INSERT INTO step (stepid, menuid, norder, detail) VALUES (%s, %s, %s, %s)"
+        query = "INSERT INTO step (stepid, menuid, norder, stepname) VALUES (%s, %s, %s, %s)"
 
         #Store warnings
         warnings = []
@@ -458,9 +458,9 @@ def renumber_norder_step(menuid, mycursor, mydb):
 
 def update_stepdetail(menuid, data, mycursor, mydb):
     try:
-        update_query = "UPDATE step SET detail = %s WHERE menuid = %s AND norder = %s"
+        update_query = "UPDATE step SET stepname = %s WHERE menuid = %s AND norder = %s"
         delete_query = "DELETE FROM step WHERE menuid = %s AND norder > %s"
-        create_query = "INSERT INTO step (stepid, menuid, norder, detail) VALUES (%s, %s, %s, %s)"
+        create_query = "INSERT INTO step (stepid, menuid, norder, stepname) VALUES (%s, %s, %s, %s)"
 
         # Get the maximum existing stepid
         sql_max = "SELECT MAX(stepid) AS maxstep FROM step"
