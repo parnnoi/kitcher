@@ -30,8 +30,21 @@ def CreateFavorite():
         val = (data['uid'],data['menuid'])
         mycursor.execute(sql,val)    
         mydb.commit()
-           
-        return make_response(jsonify({"status": "favoriteStatis is setted to True for all case"}), 200)
+
+        # #get current favorite status
+        # sql = "SELECT favoriteStatus FROM favorite WHERE uid = %s AND menuid = %s"
+        # val = (data['uid'], data['menuid'],)
+        # mycursor.execute(sql, val)
+        # status = mycursor.fetchall()[0]['favoriteStatus']
+        # newStatus = 0 if status == 1 else 1
+
+        # #change status
+        # sql = "UPDATE favorite SET favoriteStatus = %s WHERE uid = %s AND menuid = %d"
+        # val = (newStatus, data['uid'],data['menuid'])
+        # mycursor.execute(sql,val)    
+        # mydb.commit()
+
+        return make_response(jsonify({"status": "favoriteStatus is setted to True for all case"}), 200)
     
     else:
         #get lastest favoriteid

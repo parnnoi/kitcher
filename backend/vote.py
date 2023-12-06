@@ -27,7 +27,17 @@ def addnewvote():
 
     if(numCount > 0 ): #if you already vote this menu
         ### method later thiscuss
-        return make_response(jsonify({"status": "alreay voted"}), 429)
+        sql = "UPDATE vote SET score = %s, comment = %s WHERE uid = %s AND menuid = %s"
+        val = (data['score'], data['comment'], data['uid'], data['menuid'],)
+        mycursor.execute(sql, val)
+
+        #update avgScore
+        sql = "UPDATE menu SET avgVote = (SELECT AVG(score) FROM vote WHERE menuid = %s) WHERE menuid = %s"
+        val = (data['menuid'], data['menuid'],)
+        mycursor.execute(sql, val)
+        mydb.commit()
+
+        return make_response(jsonify({"status": "alreay voted and edit the vote"}), 200)
     
     else: #you never vote this menu
         #get new vote id
@@ -43,8 +53,12 @@ def addnewvote():
         sql = "INSERT INTO vote VALUES (%s, %s, %s, %s, CURRENT_TIMESTAMP, %s)"
         val = (newId, data['uid'], data['menuid'], data['score'], data['comment'],)
         mycursor.execute(sql, val)
+
+        #update avgVote
+        sql = "UPDATE menu SET avgVote = (SELECT AVG(score) FROM vote WHERE menuid = %s) WHERE menuid = %s"
+        val = (data['menuid'], data['menuid'],)
+        mycursor.execute(sql, val)
         mydb.commit()
 
         return make_response(jsonify({"status" : "complete"}), 201)
-
 

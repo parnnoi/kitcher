@@ -1,44 +1,16 @@
-@domain = {{$dotenv API_DOMAIN}}
-
-#check table menu
-GET http://127.0.0.1:5000/api/menu/addread
+###
+DELETE http://127.0.0.1:5000/api/menu/1/1
 
 ###
-
-#Create menu
-POST http://127.0.0.1:5000/api/menu/add
+POST http://127.0.0.1:5000/api/menu/addss
 Content-Type: application/json
 
-# 2 case You can enter data 1 at a time.
-# Assume have createruid = 1 and have category 1 only
-#Case 1
-  # {
-  #   "createruid": 1,
-  #   "menuName": "Healthy Salad",
-  #   "estimateTime": "15 minutes",
-  #   "categoryid": 1
-  # }
-
-#Case 2
   {
     "createruid": 1,
-    "menuName": "Corndog",
+    "menuName": "newwwwwww",
     "estimateTime": "00:17:00",
-    "categoryid": 1
-  }
-
-###
-
-#Add Ingredient
-POST http://127.0.0.1:5000/api/menu/add/ingredient/2
-Content-Type: application/json
-
-# /7 is mean menuid
-#Testcase can test for each user by change path.
-#fix ...
-
-{
-  "ingredients" : [
+    "categoryid": 1 ,
+    "ingredients" : [
     {"ingredientname": "Ingredient A", "quantity": 100},
     {"ingredientname": "Ingredient B", "quantity": 12},
     {"ingredientname": "Ingredient C", "quantity": 35},
@@ -50,49 +22,7 @@ Content-Type: application/json
     {"ingredientname": "Ingredient I", "quantity": 126},
     {"ingredientname": "Ingredient J", "quantity": 621},
     {"ingredientname": "Ingredient K", "quantity": 216}
-  ]
- } 
-
-# {
-#  "ingredients" : [
-#     "Ingredient A",
-#     "Ingredient B",
-#     "Ingredient C",
-#     "Ingredient D",
-#     "Ingredient E",
-#     "Ingredient F",
-#     "Ingredient G",
-#     "Ingredient H",
-#     "Ingredient I",
-#     "Ingredient J",
-#     "Ingredient K"
-#   ],
-#   "quantity": [
-#     100,
-#     12,
-#     35,
-#     62,
-#     1,
-#     4,
-#     9,
-#     34,
-#     126,
-#     621,
-#     216
-#   ]
-# }
-#Inprogess Kus01 10/11/2023
-
-###
-
-POST http://127.0.0.1:5000/api/menu/add/tool/2
-Content-Type: application/json
-
-
-#/1 is mean menuid
-#Insert tool function like ingredient
-
-{
+  ] , 
   "kitchentools": [
     "Chef's Knife",
     "Cutting Board",
@@ -106,124 +36,54 @@ Content-Type: application/json
     "Peeler",
     "Grater",
     "Can Opener"
-  ]
-}
-###
-
-POST http://127.0.0.1:5000/api/menu/add/step/process/2
-Content-Type: application/json
-
-#Create Step & Process version 1
-## ADD ATTRIBUTE menuid in TABLE processid cause i think easy  for query data.
-# {
-#   "steps": [
-#     {
-#       "stepname": "Prepare",
-#       "processes": [
-#         {"detail": "Cut ingredients"},
-#         {"detail": "Boiling the water"},
-#         {"detail": "Cut meat"}
-#       ]
-#     },
-#     {
-#       "stepname": "Cooking",
-#       "processes": [
-#         {"detail": "Mix all in pan"}
-#       ]
-#     }
-#   ]
-# }
-
-###
-
-POST http://127.0.0.1:5000/api/menu/add/stepdetail/2
-Content-Type: application/json
-
-#Create Step & Process version 2
-## DELETE table process
-## UPDATE Change Attribute stepname to detail in step TABLE
-{
+  ] ,
   "stepsdetail": [
     "Cut ingredient",
     "Cut meat",
     "Boiling water"
   ]
-}
-
-
-
-###
-
-#Update menu
-PUT http://127.0.0.1:5000/api/menu/update/1
-Content-Type: application/json
-
-{
-  "menuName": "Delicious Food",
-  "estimateTime": "00:01:15",
-  "categoryid": 1
-}
+  }
 
 
 ###
 
-#Update Ingredient
-PUT http://127.0.0.1:5000/api/menu/update/ingredient/2
+PUT http://127.0.0.1:5000/api/menu/update/38 
 Content-Type: application/json
 
-{
-  "ingredients" : [
-    {"ingredientname": "Ingredient deh", "quantity": 100},
-    {"ingredientname": "Ingredient Bird", "quantity": 120},
+  {
+    "createruid": 1,
+    "menuName": "Corndog",
+    "estimateTime": "00:17:00",
+    "categoryid": 1 ,
+    "ingredients" : [
+    {"ingredientname": "Ingredient A", "quantity": 120},
+    {"ingredientname": "Ingredient B", "quantity": 12},
     {"ingredientname": "Ingredient C", "quantity": 35},
     {"ingredientname": "Ingredient D", "quantity": 62},
     {"ingredientname": "Ingredient E", "quantity": 1},
     {"ingredientname": "Ingredient F", "quantity": 4},
-    {"ingredientname": "Ingredient G", "quantity": 9}
+    {"ingredientname": "Ingredient G", "quantity": 9},
+    {"ingredientname": "Ingredient H", "quantity": 34},
+    {"ingredientname": "Ingredient I", "quantity": 126},
+    {"ingredientname": "Ingredient J", "quantity": 621},
+    {"ingredientname": "Ingredient K", "quantity": 216}
+  ] , 
+  "kitchentools": [
+    "Chef's K",
+    "Cutting B",
+    "Mixing B",
+    "W",
+    "Measuring ",
+    "Measuring Spoons",
+    "Spatula",
+    "Frying Pan",
+    "Pot",
+    "Peeler",
+    "Grater",
+    "Can Opener"
+  ] ,
+  "stepsdetail": [
+    "Cut you",
+    "Boiling water"
   ]
- } 
-
-
-###
-
-PUT  http://127.0.0.1:5000/api/menu/update/tool/0
-Content-Type: application/json
-
-#Update tools
-{
-  "toolkitchen" : [
-    {"toolname": " deh", "norder": 1},
-    {"toolname": " Bird", "norder": 2},
-    {"toolname": " C", "norder": 3},
-    {"toolname": " D", "norder": 4},
-    {"toolname": " E", "norder": 5},
-    {"toolname": " F", "norder": 6},
-    {"toolname": " G", "norder": 7},
-    {"toolname": " H", "norder": 8},
-    {"toolname": " I", "norder": 9},
-    {"toolname": " J", "norder": 10},
-    {"toolname": " K", "norder": 11}
-  ]
- } 
-
-###
-
-PUT http://127.0.0.1:5000/api/menu/update/stepdetail/2
-Content-Type: application/json
-
-#Update stepdetail
-{
-  "stepdetail" : [
-    {"detail": " deh", "norder": 1},
-    {"detail": " Bird", "norder": 2},
-    {"detail": " C", "norder": 3},
-    {"detail": " D", "norder": 4},
-    {"detail": " E", "norder": 5},
-    {"detail": " F", "norder": 6}
-  ]
- } 
-
-
-###
-
-DELETE http://127.0.0.1:5000/api/menu/1/1
+  }
