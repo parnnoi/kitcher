@@ -45,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Map<String, dynamic>> categoryRecipes = [];
   List<Map<String, dynamic>> info;
   int currentPage = 1;
+  bool isLoading = true;
 
   _MyHomePageState({required this.info});
   @override
@@ -76,9 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
       final List<dynamic> recommendedMenu = jsonDecode(response.body);
       setState(() {
         recommended = recommendedMenu.cast<Map<String, dynamic>>();
+        isLoading = false;
       });
     } else {
       // Handle error
+      isLoading = false;
       print(
           'Failed to fetch recommended menu. Status code: ${response.statusCode}');
     }
@@ -164,7 +167,16 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   onSubmitted: (value) {
                     // Handle search input
-                    _searchRecipes(value, getUID());
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => SearchResultsPage(
+                          searchTerms: value,
+                          searchResults: recipes,
+                          userID: getUID(),
+                        ),
+                      ),
+                    );
                   },
                 ),
               ),
@@ -193,7 +205,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('1', 'Cake', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '1',
+                                category: 'Cake',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -209,7 +230,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   splashRadius: 10,
                                   icon: const Icon(Icons.cake_outlined),
                                   onPressed: () {
-                                    _searchCategory('1', 'Cake', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '1',
+                                          category: 'Cake',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -238,7 +268,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('2', 'Beverage', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '2',
+                                category: 'Beverage',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -255,7 +294,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   icon: const Icon(
                                       Icons.emoji_food_beverage_outlined),
                                   onPressed: () {
-                                    _searchCategory('2', 'Beverage', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '2',
+                                          category: 'Beverage',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -284,7 +332,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('3', 'Street Food', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '3',
+                                category: 'Street Food',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -300,8 +357,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   splashRadius: 10,
                                   icon: const Icon(Icons.fastfood_outlined),
                                   onPressed: () {
-                                    _searchCategory(
-                                        '3', 'Street Food', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '3',
+                                          category: 'Street Food',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -330,7 +395,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('4', 'Noodle', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '4',
+                                category: 'Noodle',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -346,7 +420,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   splashRadius: 10,
                                   icon: const Icon(Icons.ramen_dining_outlined),
                                   onPressed: () {
-                                    _searchCategory('4', 'Noodle', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '4',
+                                          category: 'Noodle',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -375,7 +458,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('5', 'Appetizer', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '5',
+                                category: 'Appetizer',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -391,7 +483,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   splashRadius: 10,
                                   icon: const Icon(Icons.kebab_dining_outlined),
                                   onPressed: () {
-                                    _searchCategory('5', 'Appetizer', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '5',
+                                          category: 'Appetizer',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -420,7 +521,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('6', 'Bakery', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '6',
+                                category: 'Bakery',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -437,7 +547,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   icon:
                                       const Icon(Icons.bakery_dining_outlined),
                                   onPressed: () {
-                                    _searchCategory('6', 'Bakery', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '5',
+                                          category: 'Bakery',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -466,7 +585,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('7', 'Japan Food', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '7',
+                                category: 'Japan Food',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -483,8 +611,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   icon: const Icon(
                                       Icons.restaurant_menu_outlined),
                                   onPressed: () {
-                                    _searchCategory(
-                                        '7', 'Japan Food', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '7',
+                                          category: 'Japan Food',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -513,7 +649,16 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: GestureDetector(
                         onTap: () {
                           // Handle the tap event here
-                          _searchCategory('8', 'Korea Food', getUID());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => CategoryPage(
+                                searchTerms: '8',
+                                category: 'Korea Food',
+                                userID: getUID(),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           width: screenWidth / 5,
@@ -530,8 +675,16 @@ class _MyHomePageState extends State<MyHomePage> {
                                   icon: const Icon(
                                       Icons.restaurant_menu_outlined),
                                   onPressed: () {
-                                    _searchCategory(
-                                        '8', 'Korea Food', getUID());
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CategoryPage(
+                                          searchTerms: '8',
+                                          category: 'Korea Food',
+                                          userID: getUID(),
+                                        ),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
@@ -615,178 +768,85 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
-              ),
-              itemCount: recommended.length,
-              itemBuilder: (BuildContext context, int index) {
-                final recipe = recommended[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            DetailPage(recipe: recipe, userID: getUID()),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: const Color.fromARGB(255, 255, 254, 235),
-                      ),
-                      width: screenWidth / 2.5,
-                      height: screenWidth / 2.5,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              recipe['menuName'],
-                              style: GoogleFonts.mali(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 8.0),
-                          FittedBox(
-                            fit: BoxFit.contain,
-                            child: Text(
-                              'Created by: ${recipe['createruid']}',
-                              style: GoogleFonts.mali(
-                                fontSize: 12,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ],
-                      ),
+          isLoading
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 150),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 255, 225, 136),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
+                )
+              : Expanded(
+                  child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 8.0,
+                      mainAxisSpacing: 8.0,
+                    ),
+                    itemCount: recommended.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final recipe = recommended[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailPage(recipe: recipe, userID: getUID()),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: const Color.fromARGB(255, 255, 254, 235),
+                            ),
+                            width: screenWidth / 2.5,
+                            height: screenWidth / 2.5,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                    recipe['menuName'],
+                                    style: GoogleFonts.mali(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(height: 8.0),
+                                FittedBox(
+                                  fit: BoxFit.contain,
+                                  child: Text(
+                                    'Created by: ${recipe['createruid']}',
+                                    style: GoogleFonts.mali(
+                                      fontSize: 12,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
         ],
       ),
       floatingActionButton: EggFloatingActionButton(userID: getUID()),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
-
-  Future<void> _searchRecipes(String searchTerm, int uID) async {
-    final Uri uri = Uri.parse(
-        'https://kitcherfromlocal.vercel.app/api/menu/name/$searchTerm/1');
-
-    final Map<String, dynamic> user = {
-      "uid": uID,
-    };
-
-    final http.Response response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(user),
-    );
-
-    if (response.statusCode == 200) {
-      final List<dynamic> searchResults = jsonDecode(response.body);
-      setState(() {
-        recipes = searchResults.cast<Map<String, dynamic>>();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => SearchResultsPage(
-              searchTerms: searchTerm,
-              searchResults: recipes,
-              userID: uID,
-              statusMessage: '',
-            ),
-          ),
-        );
-      });
-      // Navigate to the search results page
-    } else if (response.statusCode == 404) {
-      setState(() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => SearchResultsPage(
-              searchTerms: searchTerm,
-              searchResults: const [],
-              userID: uID,
-              statusMessage: 'Not found',
-            ),
-          ),
-        );
-      });
-    } else {
-      // Handle error
-      print('Failed to fetch recipes. Status code: ${response.statusCode}');
-    }
-  }
-
-  Future<void> _searchCategory(
-      String categoryID, String categoryName, int userID) async {
-    final Uri uri = Uri.parse(
-        'https://kitcherfromlocal.vercel.app/api/menu/category/$categoryID/1');
-
-    final Map<String, dynamic> user = {
-      "uid": userID,
-    };
-
-    final http.Response response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(user),
-    );
-    print('${jsonEncode(response.body)}');
-    if (response.statusCode == 200) {
-      final List<dynamic> searchResults = jsonDecode(response.body);
-      setState(() {
-        categoryRecipes = searchResults.cast<Map<String, dynamic>>();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => CategoryPage(
-              category: categoryName,
-              searchResults: categoryRecipes,
-              userID: userID,
-              statusMessage: '',
-            ),
-          ),
-        );
-      });
-      // Navigate to the search results page
-    } else if (response.statusCode == 404) {
-      setState(() {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => CategoryPage(
-              category: categoryName,
-              searchResults: const [],
-              userID: userID,
-              statusMessage: 'have not menu',
-            ),
-          ),
-        );
-      });
-    } else {
-      // Handle error
-      print('Failed to fetch recipes. Status code: ${response.statusCode}');
-    }
   }
 }
 

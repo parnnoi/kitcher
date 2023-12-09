@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'mymenu.dart';
 import 'myfav.dart';
 
@@ -118,7 +116,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () {
-                      _searchMyMenu(getUID());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MyMenuPage(
+                            userID: getUID(),
+                          ),
+                        ),
+                      );
                     },
                     child: Text(
                       'My Menu',
@@ -140,7 +145,14 @@ class _MyProfilePageState extends State<MyProfilePage> {
                       borderRadius: BorderRadius.circular(20)),
                   child: TextButton(
                     onPressed: () {
-                      _searchMyFav(getUID());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => MyFavPage(
+                            userID: getUID(),
+                          ),
+                        ),
+                      );
                     },
                     child: Text(
                       'My Favorite',
@@ -180,99 +192,5 @@ class _MyProfilePageState extends State<MyProfilePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _searchMyMenu(int createrID) async {
-    final Uri uri =
-        Uri.parse('https://kitcherfromlocal.vercel.app/api/menu/creater/1');
-    final Map<String, dynamic> user = {
-      "uid": createrID,
-    };
-
-    final http.Response response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(user),
-    );
-    print('$uri');
-    print("${jsonEncode(response.body)}");
-    if (response.statusCode == 200) {
-      final List<dynamic> searchResults = jsonDecode(response.body);
-      setState(() {
-        myMenu = searchResults.cast<Map<String, dynamic>>();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MyMenuPage(
-              searchResults: myMenu,
-              userID: getUID(),
-            ),
-          ),
-        );
-      });
-      // Navigate to the search results page
-    } else {
-      setState(
-        () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MyMenuPage(
-                searchResults: const [], // Empty list
-                userID: getUID(),
-                notFoundMessage: 'There is no menu yet. Try to add menu.',
-              ),
-            ),
-          );
-        },
-      );
-    }
-  }
-
-  Future<void> _searchMyFav(int createrID) async {
-    final Uri uri =
-        Uri.parse('https://kitcherfromlocal.vercel.app/api/menu/favorite/1');
-    final Map<String, dynamic> user = {
-      "uid": createrID,
-    };
-    final http.Response response = await http.post(
-      uri,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(user),
-    );
-    print('$uri');
-    if (response.statusCode == 200) {
-      final List<dynamic> searchResults = jsonDecode(response.body);
-      print('fav ${jsonEncode(response.body)}');
-      setState(() {
-        myFav = searchResults.cast<Map<String, dynamic>>();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => MyFavPage(
-              searchResults: myFav,
-              userID: getUID(),
-            ),
-          ),
-        );
-      });
-      // Navigate to the search results page
-    } else {
-      setState(
-        () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => MyFavPage(
-                searchResults: const [],
-                userID: getUID(),
-                notFoundMessage:
-                    'There is no menu yet. Try to add favorite menu.',
-              ),
-            ),
-          );
-        },
-      );
-    }
   }
 }
