@@ -20,6 +20,14 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _telnoController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Fetch recommended menu data when the widget is initialized
+  }
+
   Future<void> _registerUser() async {
     final BuildContext currentContext = context;
     final Uri uri =
@@ -169,6 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 255, 251, 193),
       appBar: AppBar(
         title: Text(
           'Register',

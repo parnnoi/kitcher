@@ -252,6 +252,42 @@ class _LoginDemoState extends State<LoginDemo> {
                         builder: (_) => const RegisterPage(),
                       ),
                     );
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text(
+                            'Notice for new user',
+                            style: GoogleFonts.mali(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          content: Text(
+                            'Don\'t use the real information.',
+                            style: GoogleFonts.mali(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(
+                                'OK',
+                                style: GoogleFonts.mali(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
                   child: Text(
                     'New User? Create Account',

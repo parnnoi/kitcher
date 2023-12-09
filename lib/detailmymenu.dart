@@ -363,6 +363,9 @@ class _DetailMyMenuPageState extends State<DetailMyMenuPage> {
                         child: Center(
                           child: Container(
                             decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                image: AssetImage("assets/kitcher_icon2.png"),
+                              ),
                               borderRadius: BorderRadius.circular(20),
                               color: const Color.fromARGB(255, 255, 254, 235),
                             ),

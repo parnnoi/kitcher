@@ -78,6 +78,7 @@ flutter:
     - assets/kitcher_icon_login.svg
     - assets/kitcher_element_login.svg
     - assets/kitcher_icon.png
+    - assets/kitcher_icon2.png
     - assets/kitcher_intro.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
