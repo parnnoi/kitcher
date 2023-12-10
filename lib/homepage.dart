@@ -172,7 +172,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialPageRoute(
                         builder: (_) => SearchResultsPage(
                           searchTerms: value,
-                          searchResults: recipes,
                           userID: getUID(),
                         ),
                       ),

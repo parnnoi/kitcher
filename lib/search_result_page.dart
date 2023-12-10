@@ -5,13 +5,11 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class SearchResultsPage extends StatefulWidget {
-  final List<Map<String, dynamic>> searchResults;
   final int userID;
   final String searchTerms;
   const SearchResultsPage({
     Key? key,
     required this.searchTerms,
-    required this.searchResults,
     required this.userID,
   }) : super(key: key);
 
@@ -64,7 +62,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(user),
     );
-
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final List<dynamic> searchResults = jsonDecode(response.body);
       setState(() {
@@ -105,8 +103,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
       final List<dynamic> additionalData = jsonDecode(response.body);
 
       setState(() {
-        widget.searchResults
-            .addAll(additionalData.cast<Map<String, dynamic>>());
+        recipes.addAll(additionalData.cast<Map<String, dynamic>>());
       });
     } else {
       // Handle error
@@ -118,7 +115,7 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    print('${widget.searchResults}');
+    print('${recipes}');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -165,9 +162,9 @@ class _SearchResultsPageState extends State<SearchResultsPage> {
                           crossAxisSpacing: 8.0,
                           mainAxisSpacing: 8.0,
                         ),
-                        itemCount: widget.searchResults.length,
+                        itemCount: recipes.length,
                         itemBuilder: (context, index) {
-                          var recipe = widget.searchResults[index];
+                          var recipe = recipes[index];
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(

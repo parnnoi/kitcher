@@ -259,14 +259,32 @@ class _DetailMyMenuPageState extends State<DetailMyMenuPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Confirm Delete'),
-          content: Text('Are you sure you want to delete this menu?'),
+          title: Text(
+            'Confirm Delete',
+            style: GoogleFonts.mali(
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+          content: Text(
+            'Are you sure you want to delete this menu?',
+            style: GoogleFonts.mali(
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: GoogleFonts.mali(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -274,7 +292,13 @@ class _DetailMyMenuPageState extends State<DetailMyMenuPage> {
                 deleteMenu(widget.userID, widget.recipe['menuid']);
                 Navigator.of(context).pop();
               },
-              child: Text('Delete'),
+              child: Text(
+                'Delete',
+                style: GoogleFonts.mali(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
             ),
           ],
         );
