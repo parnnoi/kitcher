@@ -327,7 +327,7 @@ class _DetailFavPageState extends State<DetailFavPage> {
                                               child: Text(
                                                 '${menuDescription[0]['estimateTime']}',
                                                 style: GoogleFonts.mali(
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.white,
                                                 ),

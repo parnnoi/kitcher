@@ -90,7 +90,7 @@ class _DetailPageState extends State<DetailPage> {
     print('$requestData');
     print('${jsonEncode(response.body)}');
     print('${response.statusCode}');
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
